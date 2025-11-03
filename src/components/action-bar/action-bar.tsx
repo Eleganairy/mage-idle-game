@@ -4,16 +4,23 @@ import { Paragraph } from "../paragraph";
 import StarIcon from "@mui/icons-material/Star";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { DEFAULT_TEXT_COLOR, LABEL_TEXT_COLOR } from "../../constants/colors";
-import { useAtom } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import { playerStatsAtom } from "../../features/player/player.atoms";
+import { Pages } from "../../features/game-state/game-state.types";
+import { activePageAtom } from "../../features/game-state/game-state.atoms";
 
 export const ActionBar = () => {
-  const [playerStats] = useAtom(playerStatsAtom);
+  const playerStats = useAtomValue(playerStatsAtom);
+  const setActivePage = useSetAtom(activePageAtom);
 
   return (
     <Stack spacing={2}>
       <Box sx={{ padding: 2 }}>
-        <ActionBarItem text="Battlefield" rightText="Level 1" />
+        <ActionBarItem
+          text="Battlefield"
+          rightText="Level 1"
+          onClick={() => setActivePage(Pages.battlefield)}
+        />
       </Box>
       <Stack spacing={2} sx={{ padding: 2 }}>
         <Paragraph text="This prestige" color={LABEL_TEXT_COLOR} />
@@ -21,6 +28,7 @@ export const ActionBar = () => {
           text="Upgrades"
           rightText="1 / 100"
           icon={<StarIcon sx={{ color: DEFAULT_TEXT_COLOR }} />}
+          onClick={() => setActivePage(Pages.upgrades)}
         />
         <ActionBarItem
           text="Attack Damage"

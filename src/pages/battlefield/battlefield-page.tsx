@@ -3,7 +3,7 @@ import { Player } from "../../components/player";
 import { Enemy } from "../../components/enemy";
 import { Counter } from "../../components/counter";
 
-export const Battlefield = () => {
+export const BattlefieldPage = () => {
   return (
     <Box>
       <Stack

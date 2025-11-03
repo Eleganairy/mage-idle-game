@@ -1,1 +1,1 @@
-export { Battlefield } from "./battlefield";
+export { BattlefieldPage } from "./battlefield-page";
