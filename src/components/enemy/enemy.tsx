@@ -7,7 +7,7 @@ import {
 } from "../../features/player/player.atoms";
 import { enemyStatsAtom } from "../../features/enemy/enemy.atoms";
 import { idleStatsAtom } from "../../features/idle/idle.atoms";
-import { useAttack } from "./enemy.helpers";
+import { useAttack } from "../../features/enemy/enemy.helpers";
 import { useState } from "react";
 
 export const Enemy = () => {
