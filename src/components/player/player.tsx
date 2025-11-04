@@ -19,7 +19,7 @@ export const Player = () => {
     >
       <Stack spacing={1} sx={{ alignItems: "center" }}>
         <Paragraph text={"Player"} size="large" />
-        <Paragraph text={`100 / ${playerStats.health.toString()}`} />
+        <Paragraph text={`100 / ${playerStats.baseHealth.toString()}`} />
       </Stack>
     </Box>
   );

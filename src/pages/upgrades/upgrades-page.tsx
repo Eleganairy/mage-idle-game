@@ -3,73 +3,71 @@ import StarIcon from "@mui/icons-material/Star";
 import { SmallUpgradeBlock } from "../../components/upgrade-block";
 import { DEFAULT_TEXT_COLOR } from "../../constants/colors";
 import { useAtom } from "jotai";
-import {
-  IdleAttackUpgradeAtom,
-  MainAttackUpgradeAtom,
-} from "../../features/upgrades/upgrades.atoms";
+import { MainAttackUpgradeAtom } from "../../features/upgrades/upgrades.atoms";
 import { playerStatsAtom } from "../../features/player/player.atoms";
-import { idleStatsAtom } from "../../features/idle/idle.atoms";
+import { ModifierTypes } from "../../features/player/player.types";
 
 export const UpgradesPage = () => {
   const [playerStats, setPlayerStats] = useAtom(playerStatsAtom);
-  const [idleStats, setIdleStats] = useAtom(idleStatsAtom);
   const [mainAttackUpgrade, setMainAttackUpgrade] = useAtom(
     MainAttackUpgradeAtom
   );
-  const [idleAttackUpgrade, setIdleAttackUpgrade] = useAtom(
-    IdleAttackUpgradeAtom
-  );
 
-  const updatePlayerUpgrades = () => {
-    const newAttackDamage =
-      playerStats.attackDamage +
-      (mainAttackUpgrade.currentUpgrades + 1) *
-        mainAttackUpgrade.currentUpgrades;
-
-    setPlayerStats((prev) => ({
-      ...prev,
-      attackDamage: newAttackDamage,
-    }));
-
+  const updatePlayerAttackDamage = () => {
     setMainAttackUpgrade((prev) => ({
       ...prev,
       currentUpgrades: prev.currentUpgrades + 1,
     }));
-  };
 
-  const updateIdleUpgrades = () => {
-    const newAttackDamage =
-      idleStats.attackDamage +
-      (idleAttackUpgrade.currentUpgrades + 1) *
-        idleAttackUpgrade.currentUpgrades;
+    if (
+      playerStats.attackDamageModifiers.find(
+        (modifier) => modifier.name === "Main Attack Damage Upgrade"
+      )
+    ) {
+      setPlayerStats((prev) => {
+        return {
+          ...prev,
+          attackDamageModifiers: prev.attackDamageModifiers.map((modifier) => {
+            if (modifier.name === "Main Attack Damage Upgrade") {
+              return {
+                ...modifier,
+                tier: mainAttackUpgrade.currentUpgrades,
+                value: mainAttackUpgrade.currentUpgrades,
+              };
+            }
+            return modifier;
+          }),
+        };
+      });
+    }
 
-    setIdleStats((prev) => ({
-      ...prev,
-      attackDamage: newAttackDamage,
-    }));
-
-    setIdleAttackUpgrade((prev) => ({
-      ...prev,
-      currentUpgrades: prev.currentUpgrades + 1,
-    }));
+    setPlayerStats((prev) => {
+      return {
+        ...prev,
+        attackDamageModifiers: [
+          ...prev.attackDamageModifiers,
+          {
+            name: "Main Attack Damage Upgrade",
+            type: ModifierTypes.ADDITIVE,
+            tier: mainAttackUpgrade.currentUpgrades,
+            value: 1,
+          },
+        ],
+      };
+    });
   };
 
   return (
     <Box>
-      <SmallUpgradeBlock
-        icon={<StarIcon sx={{ color: DEFAULT_TEXT_COLOR }} />}
-        description={"Upgrade main attack + 1"}
-        currentUpgrades={mainAttackUpgrade.currentUpgrades}
-        totalUpgrades={mainAttackUpgrade.totalUpgrades}
-        onClick={() => updatePlayerUpgrades()}
-      />
-      <SmallUpgradeBlock
-        icon={<StarIcon sx={{ color: DEFAULT_TEXT_COLOR }} />}
-        description={"Upgrade idle attack + 1"}
-        currentUpgrades={idleAttackUpgrade.currentUpgrades}
-        totalUpgrades={idleAttackUpgrade.totalUpgrades}
-        onClick={() => updateIdleUpgrades()}
-      />
+      {mainAttackUpgrade.currentUpgrades < mainAttackUpgrade.totalUpgrades && (
+        <SmallUpgradeBlock
+          icon={<StarIcon sx={{ color: DEFAULT_TEXT_COLOR }} />}
+          description={`Upgrade attack damage + 1, total: + ${mainAttackUpgrade.currentUpgrades}`}
+          currentUpgrades={mainAttackUpgrade.currentUpgrades}
+          totalUpgrades={mainAttackUpgrade.totalUpgrades}
+          onClick={() => updatePlayerAttackDamage()}
+        />
+      )}
     </Box>
   );
 };

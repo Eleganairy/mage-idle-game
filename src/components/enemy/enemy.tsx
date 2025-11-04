@@ -6,25 +6,22 @@ import {
   playerStatsAtom,
 } from "../../features/player/player.atoms";
 import { enemyStatsAtom } from "../../features/enemy/enemy.atoms";
-import { idleStatsAtom } from "../../features/idle/idle.atoms";
-import { useAttack } from "../../features/enemy/enemy.helpers";
 import { useState } from "react";
+import { useGameLoop } from "../../features/gameloop/gameloop.hooks";
+import { useUpgradedStat } from "../../features/player/player.hooks";
 
 export const Enemy = () => {
   const setPlayerCurrency = useSetAtom(playerCurrencyAtom);
   const enemyStats = useAtomValue(enemyStatsAtom);
   const playerStats = useAtomValue(playerStatsAtom);
-  const idleStats = useAtomValue(idleStatsAtom);
 
   const [enemyCurrentHealth, setEnemyCurrentHealth] = useState(
     enemyStats.health
   );
-  const [playerIsAttacking, setPlayerIsAttacking] = useState(false);
 
   const handleAttack = (damage: number) => {
     setEnemyCurrentHealth((health) => {
       const newHealth = health - damage;
-
       if (newHealth <= 0) {
         setPlayerCurrency((curr) => curr + enemyStats.currencyDropReward);
         return enemyStats.health;
@@ -34,23 +31,21 @@ export const Enemy = () => {
     });
   };
 
-  const playerAttackProgress = useAttack({
-    attackSpeed: playerStats.attackSpeed,
-    isAttacking: playerIsAttacking,
-    onAttackComplete: () => handleAttack(playerStats.attackDamage),
-  });
+  const totalAttackDamage = useUpgradedStat(
+    playerStats.baseAttackDamage,
+    playerStats.attackDamageModifiers
+  );
 
-  const idleAttackProgress = useAttack({
-    attackSpeed: idleStats.attackSpeed,
-    isAttacking: true, // Always running
-    onAttackComplete: () => handleAttack(idleStats.attackDamage),
+  console.log(playerStats.baseAttackDamage, playerStats.attackDamageModifiers);
+
+  const attackProgress = useGameLoop({
+    endTime: (1 / playerStats.baseAttackSpeed) * 1000,
+    onTimeEnd: () => handleAttack(totalAttackDamage),
   });
 
   const healthPercentage = () => (enemyCurrentHealth / enemyStats.health) * 200;
 
-  const attackProgressPercentage = () => (playerAttackProgress / 100) * 200;
-
-  const idleAttackProgressPercentage = () => (idleAttackProgress / 100) * 200;
+  const attackProgressPercentage = () => (attackProgress / 100) * 200;
 
   return (
     <Box
@@ -62,8 +57,6 @@ export const Enemy = () => {
         display: "flex",
         alignItems: "center",
       }}
-      onMouseDown={() => setPlayerIsAttacking(true)}
-      onMouseUp={() => setPlayerIsAttacking(false)}
     >
       <Stack spacing={2} alignItems={"center"}>
         <Box sx={{ border: "2px solid black", width: "200px", height: "20px" }}>
@@ -81,15 +74,6 @@ export const Enemy = () => {
             sx={{
               backgroundColor: "orange",
               width: `${attackProgressPercentage()}px`,
-              height: "20px",
-            }}
-          />
-        </Box>
-        <Box sx={{ border: "2px solid black", width: "200px", height: "20px" }}>
-          <Box
-            sx={{
-              backgroundColor: "darkred",
-              width: `${idleAttackProgressPercentage()}px`,
               height: "20px",
             }}
           />

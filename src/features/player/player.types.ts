@@ -5,14 +5,11 @@ export type PlayerStats = {
   attackDamageModifiers: Array<Modifier>;
   baseAttackSpeed: number;
   attackSpeedModifiers: Array<Modifier>;
-  baseIdleDamage: number;
-  idleDamageModifiers: Array<Modifier>;
-  baseIdleAttackSpeed: number;
-  idleAttackSpeedModifiers: Array<Modifier>;
   money: number;
 };
 
 export type Modifier = {
+  name: string;
   value: number;
   tier: number;
   type: ModifierTypes;

@@ -1,6 +1,6 @@
 import { ModifierTypes, type Modifier } from "./player.types";
 
-export const useTotalPlayerStat = (
+export const useUpgradedStat = (
   baseValue: number,
   modifiers: Array<Modifier>
 ) => {

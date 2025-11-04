@@ -10,9 +10,5 @@ export const playerStatsAtom = atom<PlayerStats>({
   attackDamageModifiers: [],
   baseAttackSpeed: 1000,
   attackSpeedModifiers: [],
-  baseIdleDamage: 1,
-  idleDamageModifiers: [],
-  baseIdleAttackSpeed: 1000,
-  idleAttackSpeedModifiers: [],
   money: 0,
 });
