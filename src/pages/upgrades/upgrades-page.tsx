@@ -14,6 +14,17 @@ export const UpgradesPage = () => {
   );
 
   const updatePlayerAttackDamage = () => {
+    if (
+      mainAttackUpgrade.currentUpgrades >= mainAttackUpgrade.totalUpgrades ||
+      playerStats.money < mainAttackUpgrade.cost
+    )
+      return;
+
+    setPlayerStats((prev) => ({
+      ...prev,
+      money: prev.money - mainAttackUpgrade.cost,
+    }));
+
     setMainAttackUpgrade((prev) => ({
       ...prev,
       currentUpgrades: prev.currentUpgrades + 1,
@@ -31,30 +42,30 @@ export const UpgradesPage = () => {
             if (modifier.name === "Main Attack Damage Upgrade") {
               return {
                 ...modifier,
-                tier: mainAttackUpgrade.currentUpgrades,
-                value: mainAttackUpgrade.currentUpgrades,
+                tier: mainAttackUpgrade.currentUpgrades + 1,
+                value: mainAttackUpgrade.value,
               };
             }
             return modifier;
           }),
         };
       });
+    } else {
+      setPlayerStats((prev) => {
+        return {
+          ...prev,
+          attackDamageModifiers: [
+            ...prev.attackDamageModifiers,
+            {
+              name: "Main Attack Damage Upgrade",
+              type: ModifierTypes.ADDITIVE,
+              tier: mainAttackUpgrade.currentUpgrades + 1,
+              value: mainAttackUpgrade.value,
+            },
+          ],
+        };
+      });
     }
-
-    setPlayerStats((prev) => {
-      return {
-        ...prev,
-        attackDamageModifiers: [
-          ...prev.attackDamageModifiers,
-          {
-            name: "Main Attack Damage Upgrade",
-            type: ModifierTypes.ADDITIVE,
-            tier: mainAttackUpgrade.currentUpgrades,
-            value: 1,
-          },
-        ],
-      };
-    });
   };
 
   return (

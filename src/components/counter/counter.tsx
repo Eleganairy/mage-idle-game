@@ -1,9 +1,9 @@
 import { useAtomValue } from "jotai";
 import { Paragraph } from "../paragraph";
-import { playerCurrencyAtom } from "../../features/player/player.atoms";
+import { playerStatsAtom } from "../../features/player/player.atoms";
 
 export const Counter = () => {
-  const playerCurrency = useAtomValue(playerCurrencyAtom);
+  const playerMoney = useAtomValue(playerStatsAtom).money;
 
-  return <Paragraph text={playerCurrency?.toString()} size={"counter"} />;
+  return <Paragraph text={playerMoney?.toString()} size={"counter"} />;
 };

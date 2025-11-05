@@ -1,19 +1,15 @@
 import { Box, Stack } from "@mui/material";
 import { Paragraph } from "../paragraph";
-import { useAtomValue, useSetAtom } from "jotai";
-import {
-  playerCurrencyAtom,
-  playerStatsAtom,
-} from "../../features/player/player.atoms";
+import { useAtom, useAtomValue } from "jotai";
+import { playerStatsAtom } from "../../features/player/player.atoms";
 import { enemyStatsAtom } from "../../features/enemy/enemy.atoms";
 import { useState } from "react";
 import { useGameLoop } from "../../features/gameloop/gameloop.hooks";
 import { useUpgradedStat } from "../../features/player/player.hooks";
 
 export const Enemy = () => {
-  const setPlayerCurrency = useSetAtom(playerCurrencyAtom);
   const enemyStats = useAtomValue(enemyStatsAtom);
-  const playerStats = useAtomValue(playerStatsAtom);
+  const [playerStats, setPlayerStats] = useAtom(playerStatsAtom);
 
   const [enemyCurrentHealth, setEnemyCurrentHealth] = useState(
     enemyStats.health
@@ -23,7 +19,10 @@ export const Enemy = () => {
     setEnemyCurrentHealth((health) => {
       const newHealth = health - damage;
       if (newHealth <= 0) {
-        setPlayerCurrency((curr) => curr + enemyStats.currencyDropReward);
+        setPlayerStats((prev) => ({
+          ...prev,
+          money: prev.money + enemyStats.currencyDropReward,
+        }));
         return enemyStats.health;
       }
 
@@ -35,8 +34,6 @@ export const Enemy = () => {
     playerStats.baseAttackDamage,
     playerStats.attackDamageModifiers
   );
-
-  console.log(playerStats.baseAttackDamage, playerStats.attackDamageModifiers);
 
   const attackProgress = useGameLoop({
     endTime: (1 / playerStats.baseAttackSpeed) * 1000,
