@@ -5,7 +5,7 @@ import { playerStatsAtom } from "../../features/player/player.atoms";
 import { enemyStatsAtom } from "../../features/enemy/enemy.atoms";
 import { useState } from "react";
 import { useGameLoop } from "../../features/gameloop/gameloop.hooks";
-import { useUpgradedStat } from "../../features/player/player.hooks";
+import { PLAYER_BASE_ATTACK_SPEED } from "../../features/player/player.constants";
 
 export const Enemy = () => {
   const enemyStats = useAtomValue(enemyStatsAtom);
@@ -30,15 +30,12 @@ export const Enemy = () => {
     });
   };
 
-  const totalAttackDamage = useUpgradedStat(
-    playerStats.baseAttackDamage,
-    playerStats.attackDamageModifiers
-  );
-
   const attackProgress = useGameLoop({
-    endTime: (1 / playerStats.baseAttackSpeed) * 1000,
-    onTimeEnd: () => handleAttack(totalAttackDamage),
+    endTime: (1 / PLAYER_BASE_ATTACK_SPEED) * 1000,
+    onTimeEnd: () => handleAttack(playerStats.totalAttackDamage),
   });
+
+  console.log(playerStats);
 
   const healthPercentage = () => (enemyCurrentHealth / enemyStats.health) * 200;
 

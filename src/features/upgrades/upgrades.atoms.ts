@@ -1,12 +1,30 @@
 import { atom } from "jotai";
-import type { UpgradeType } from "./upgrades.types";
+import { Upgrades, type UpgradeType } from "./upgrades.types";
 import { ModifierTypes } from "../player/player.types";
 
-export const MainAttackUpgradeAtom = atom<UpgradeType>({
-  currentUpgrades: 0,
-  totalUpgrades: 10,
-  value: 1,
-  type: ModifierTypes.ADDITIVE,
-  cap: 10,
-  cost: 5,
-});
+export const playerUpgradesAtom = atom<Array<UpgradeType>>([
+  {
+    name: Upgrades.ATTACK_DAMAGE,
+    currentUpgrades: 0,
+    upgradesCap: 20,
+    upgradeValue: 1,
+    type: ModifierTypes.ADDITIVE,
+    cost: 1,
+  },
+  {
+    name: Upgrades.ATTACK_SPEED,
+    currentUpgrades: 0,
+    upgradesCap: 20,
+    upgradeValue: 10,
+    type: ModifierTypes.PERCENTILE,
+    cost: 2,
+  },
+  {
+    name: Upgrades.HEALTH,
+    currentUpgrades: 0,
+    upgradesCap: 10,
+    upgradeValue: 0.2,
+    type: ModifierTypes.MULTIPLICATIVE,
+    cost: 5,
+  },
+]);

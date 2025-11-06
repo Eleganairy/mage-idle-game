@@ -1,10 +1,26 @@
 import { Box, Stack } from "@mui/material";
 import { Paragraph } from "../paragraph";
-import { useAtomValue } from "jotai";
+import {
+  PLAYER_BASE_ATTACK_DAMAGE,
+  PLAYER_BASE_HEALTH,
+} from "../../features/player/player.constants";
+import { useEffect } from "react";
+import { useAtom } from "jotai";
 import { playerStatsAtom } from "../../features/player/player.atoms";
+import { calculateTotalValue } from "../../features/player/player.hooks";
 
 export const Player = () => {
-  const playerStats = useAtomValue(playerStatsAtom);
+  const [playerStats, setPlayerStats] = useAtom(playerStatsAtom);
+
+  useEffect(() => {
+    setPlayerStats((prev) => ({
+      ...prev,
+      totalAttackDamage: calculateTotalValue(
+        PLAYER_BASE_ATTACK_DAMAGE,
+        playerStats.attackDamageModifiers
+      ),
+    }));
+  }, [playerStats.attackDamageModifiers, setPlayerStats]);
 
   return (
     <Box
@@ -19,7 +35,7 @@ export const Player = () => {
     >
       <Stack spacing={1} sx={{ alignItems: "center" }}>
         <Paragraph text={"Player"} size="large" />
-        <Paragraph text={`100 / ${playerStats.baseHealth.toString()}`} />
+        <Paragraph text={`100 / ${PLAYER_BASE_HEALTH.toString()}`} />
       </Stack>
     </Box>
   );

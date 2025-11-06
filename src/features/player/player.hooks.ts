@@ -1,11 +1,12 @@
 import { ModifierTypes, type Modifier } from "./player.types";
 
-export const useUpgradedStat = (
+export const calculateTotalValue = (
   baseValue: number,
   modifiers: Array<Modifier>
 ) => {
   let totalValue = baseValue;
 
+  console.log("Calculating total value...");
   modifiers.forEach((modifier) => {
     if (modifier.type === ModifierTypes.ADDITIVE) {
       totalValue += modifier.value * modifier.tier;

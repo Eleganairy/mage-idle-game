@@ -28,7 +28,7 @@ export const SmallUpgradeBlock = ({
           <Paragraph text={description} color={DEFAULT_TEXT_COLOR} />
         </Box>
         <Paragraph
-          text={`${currentUpgrades}/${totalUpgrades}${affix || ""}`}
+          text={`${currentUpgrades} / ${totalUpgrades}${affix || ""}`}
           color={DEFAULT_TEXT_COLOR}
         />
         <Button onClick={onClick} sx={{ color: DEFAULT_TEXT_COLOR }}>

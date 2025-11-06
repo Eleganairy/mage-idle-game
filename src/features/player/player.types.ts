@@ -1,9 +1,9 @@
 export type PlayerStats = {
-  baseHealth: number;
+  totalHealth: number;
   healthModifiers: Array<Modifier>;
-  baseAttackDamage: number;
+  totalAttackDamage: number;
   attackDamageModifiers: Array<Modifier>;
-  baseAttackSpeed: number;
+  totalAttackSpeed: number;
   attackSpeedModifiers: Array<Modifier>;
   money: number;
 };

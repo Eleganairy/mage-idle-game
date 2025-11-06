@@ -1,10 +1,16 @@
 import type { ModifierTypes } from "../player/player.types";
 
 export type UpgradeType = {
+  name: Upgrades;
   currentUpgrades: number;
-  totalUpgrades: number;
-  value: number;
+  upgradesCap: number;
+  upgradeValue: number;
   type: ModifierTypes;
-  cap: number;
   cost: number;
 };
+
+export enum Upgrades {
+  ATTACK_DAMAGE = "ATTACK_DAMAGE",
+  ATTACK_SPEED = "ATTACK_SPEED",
+  HEALTH = "HEALTH",
+}
