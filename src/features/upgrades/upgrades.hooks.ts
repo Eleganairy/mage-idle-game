@@ -1,10 +1,11 @@
 import { Upgrades, type UpgradeType } from "./upgrades.types";
 import type { PlayerStats } from "../player/player.types";
 
-export const updatedPlayerStats = (
+export const updatedPlayerUpgrades = (
   name: Upgrades,
   upgrade: UpgradeType,
-  playerStats: PlayerStats
+  playerStats: PlayerStats,
+  playerUpgrades: UpgradeType[]
 ) => {
   // Applies the correct upgrade to the player's stats
   switch (name) {
@@ -12,58 +13,52 @@ export const updatedPlayerStats = (
       // Updates the player's attack damage modifier
       return {
         ...playerStats,
-        money: playerStats.money - upgrade.cost,
-        attackDamageModifiers: playerStats.attackDamageModifiers.map(
-          (modifier) => {
-            if (modifier.name === "Attack Damage Upgrade") {
-              return {
-                ...modifier,
-                tier: upgrade.currentUpgrades + 1,
-                value: upgrade.upgradeValue + 1,
-              };
-            }
-            return modifier;
+        energy: playerStats.energy - upgrade.cost,
+        attackDamageModifiers: playerUpgrades.map((modifier) => {
+          if (modifier.name === Upgrades.ATTACK_DAMAGE) {
+            return {
+              ...modifier,
+              tier: upgrade.currentUpgrades + 1,
+              value: upgrade.upgradeValue + 1,
+            };
           }
-        ),
+          return modifier;
+        }),
       };
     case Upgrades.ATTACK_SPEED:
       // Updates the player's attack speed modifier
       return {
         ...playerStats,
-        attackDamageModifiers: playerStats.attackDamageModifiers.map(
-          (modifier) => {
-            if (modifier.name === "Attack Speed Upgrade") {
-              return {
-                ...modifier,
-                tier: upgrade.currentUpgrades + 1,
-                value: upgrade.upgradeValue + 0.2,
-              };
-            }
-            return modifier;
+        attackDamageModifiers: playerUpgrades.map((modifier) => {
+          if (modifier.name === Upgrades.ATTACK_SPEED) {
+            return {
+              ...modifier,
+              tier: upgrade.currentUpgrades + 1,
+              value: upgrade.upgradeValue + 0.2,
+            };
           }
-        ),
+          return modifier;
+        }),
       };
     case Upgrades.HEALTH:
       // Updates the player's health modifier
       return {
         ...playerStats,
-        attackDamageModifiers: playerStats.attackDamageModifiers.map(
-          (modifier) => {
-            if (modifier.name === "Health Upgrade") {
-              return {
-                ...modifier,
-                tier: upgrade.currentUpgrades + 1,
-                value: upgrade.upgradeValue + 10,
-              };
-            }
-            return modifier;
+        attackDamageModifiers: playerUpgrades.map((modifier) => {
+          if (modifier.name === Upgrades.HEALTH) {
+            return {
+              ...modifier,
+              tier: upgrade.currentUpgrades + 1,
+              value: upgrade.upgradeValue + 10,
+            };
           }
-        ),
+          return modifier;
+        }),
       };
   }
 };
 
-export const updatedPlayerUpgrades = (
+export const updatedPlayerStats = (
   name: Upgrades,
   playerUpgrades: UpgradeType[],
   playerStats: PlayerStats
@@ -74,14 +69,14 @@ export const updatedPlayerUpgrades = (
       // Checks if the upgrade can be applied
       if (
         upgrade.currentUpgrades >= upgrade.upgradesCap ||
-        playerStats.money < upgrade.cost
+        playerStats.energy < upgrade.cost
       )
         return upgrade;
       // Applies the upgrade
       return {
         ...upgrade,
         currentUpgrades: upgrade.currentUpgrades + 1,
-        upgradeValue: upgrade.upgradeValue + 1,
+        upgradeValue: upgrade.upgradeValue,
       };
     }
     // Returns the upgrade unchanged if it's not the one being updated

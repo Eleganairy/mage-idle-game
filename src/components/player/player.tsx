@@ -5,22 +5,24 @@ import {
   PLAYER_BASE_HEALTH,
 } from "../../features/player/player.constants";
 import { useEffect } from "react";
-import { useAtom } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import { playerStatsAtom } from "../../features/player/player.atoms";
 import { calculateTotalValue } from "../../features/player/player.hooks";
+import { playerUpgradesAtom } from "../../features/upgrades/upgrades.atoms";
 
 export const Player = () => {
-  const [playerStats, setPlayerStats] = useAtom(playerStatsAtom);
+  const setPlayerStats = useSetAtom(playerStatsAtom);
+  const playerUpgrades = useAtomValue(playerUpgradesAtom);
 
   useEffect(() => {
     setPlayerStats((prev) => ({
       ...prev,
       totalAttackDamage: calculateTotalValue(
         PLAYER_BASE_ATTACK_DAMAGE,
-        playerStats.attackDamageModifiers
+        playerUpgrades
       ),
     }));
-  }, [playerStats.attackDamageModifiers, setPlayerStats]);
+  }, [playerUpgrades, setPlayerStats]);
 
   return (
     <Box

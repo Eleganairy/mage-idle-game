@@ -1,11 +1,8 @@
 export type PlayerStats = {
   totalHealth: number;
-  healthModifiers: Array<Modifier>;
   totalAttackDamage: number;
-  attackDamageModifiers: Array<Modifier>;
   totalAttackSpeed: number;
-  attackSpeedModifiers: Array<Modifier>;
-  money: number;
+  energy: number;
 };
 
 export type Modifier = {

@@ -3,5 +3,6 @@ import type { EnemyStats } from "./enemy.types";
 
 export const enemyStatsAtom = atom<EnemyStats>({
   health: 10,
+  currentHealth: 10,
   currencyDropReward: 1,
 });

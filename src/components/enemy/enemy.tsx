@@ -1,43 +1,15 @@
 import { Box, Stack } from "@mui/material";
 import { Paragraph } from "../paragraph";
-import { useAtom, useAtomValue } from "jotai";
-import { playerStatsAtom } from "../../features/player/player.atoms";
+import { useAtomValue } from "jotai";
 import { enemyStatsAtom } from "../../features/enemy/enemy.atoms";
-import { useState } from "react";
-import { useGameLoop } from "../../features/gameloop/gameloop.hooks";
-import { PLAYER_BASE_ATTACK_SPEED } from "../../features/player/player.constants";
+import { useGameLoopContext } from "../../features/gameloop/gameloop.hooks";
 
 export const Enemy = () => {
   const enemyStats = useAtomValue(enemyStatsAtom);
-  const [playerStats, setPlayerStats] = useAtom(playerStatsAtom);
+  const { attackProgress } = useGameLoopContext();
 
-  const [enemyCurrentHealth, setEnemyCurrentHealth] = useState(
-    enemyStats.health
-  );
-
-  const handleAttack = (damage: number) => {
-    setEnemyCurrentHealth((health) => {
-      const newHealth = health - damage;
-      if (newHealth <= 0) {
-        setPlayerStats((prev) => ({
-          ...prev,
-          money: prev.money + enemyStats.currencyDropReward,
-        }));
-        return enemyStats.health;
-      }
-
-      return newHealth;
-    });
-  };
-
-  const attackProgress = useGameLoop({
-    endTime: (1 / PLAYER_BASE_ATTACK_SPEED) * 1000,
-    onTimeEnd: () => handleAttack(playerStats.totalAttackDamage),
-  });
-
-  console.log(playerStats);
-
-  const healthPercentage = () => (enemyCurrentHealth / enemyStats.health) * 200;
+  const healthPercentage = () =>
+    (enemyStats.currentHealth / enemyStats.health) * 200;
 
   const attackProgressPercentage = () => (attackProgress / 100) * 200;
 
@@ -62,7 +34,9 @@ export const Enemy = () => {
             }}
           />
         </Box>
-        <Paragraph text={`${enemyCurrentHealth} / ${enemyStats.health}`} />
+        <Paragraph
+          text={`${enemyStats.currentHealth} / ${enemyStats.health}`}
+        />
         <Box sx={{ border: "2px solid black", width: "200px", height: "20px" }}>
           <Box
             sx={{

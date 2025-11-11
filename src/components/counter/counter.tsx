@@ -3,7 +3,7 @@ import { Paragraph } from "../paragraph";
 import { playerStatsAtom } from "../../features/player/player.atoms";
 
 export const Counter = () => {
-  const playerMoney = useAtomValue(playerStatsAtom).money;
+  const playerMoney = useAtomValue(playerStatsAtom).energy;
 
   return <Paragraph text={playerMoney?.toString()} size={"counter"} />;
 };
