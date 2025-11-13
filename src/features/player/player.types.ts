@@ -2,7 +2,6 @@ export type PlayerStats = {
   totalHealth: number;
   totalAttackDamage: number;
   totalAttackSpeed: number;
-  energy: number;
 };
 
 export type Modifier = {

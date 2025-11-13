@@ -1,54 +1,60 @@
-import { Box } from "@mui/material";
-import StarIcon from "@mui/icons-material/Star";
+import { Box, Grid } from "@mui/material";
 import { SmallUpgradeBlock } from "../../components/upgrade-block";
-import { DEFAULT_TEXT_COLOR } from "../../constants/colors";
 import { useAtom } from "jotai";
 import { playerUpgradesAtom } from "../../features/upgrades/upgrades.atoms";
-import { playerStatsAtom } from "../../features/player/player.atoms";
-import { Upgrades } from "../../features/upgrades/upgrades.types";
-import { updatedPlayerStats } from "../../features/upgrades/upgrades.hooks";
+import { playerCurrenciesAtom } from "../../features/player/player.atoms";
+import type { Upgrade } from "../../features/upgrades/upgrades.types";
+import { updatedPlayerStats } from "../../features/upgrades/upgrades.helpers";
+
+//TODO
+//Each upgrade should do the following steps
+// 1. Check if player has enough money
+// 2. Deduct money from player
+// 3. Increase the upgrade level
+// 4. Update the player's stats with the new upgrade
+//   // If the modifier already exists, update its value and tier
+//  //   // If it doesn't exist, add a new modifier to the player's stats
+// 5. Recalculate any derived stats if necessary
+// 6. Provide feedback to the player (e.g., sound effect, visual effect)
+// 7. Save the game state if applicable
+// 8. Update the UI to reflect the new upgrade level and player's stats
 
 export const UpgradesPage = () => {
-  const [playerStats] = useAtom(playerStatsAtom);
+  const [playerCurrencies, setPlayerCurrencies] = useAtom(playerCurrenciesAtom);
   const [playerUpgrades, setPlayerUpgrades] = useAtom(playerUpgradesAtom);
 
-  //TODO
-  //Each upgrade should do the following steps
-  // 1. Check if player has enough money
-  // 2. Deduct money from player
-  // 3. Increase the upgrade level
-  // 4. Update the player's stats with the new upgrade
-  //   // If the modifier already exists, update its value and tier
-  //  //   // If it doesn't exist, add a new modifier to the player's stats
-  // 5. Recalculate any derived stats if necessary
-  // 6. Provide feedback to the player (e.g., sound effect, visual effect)
-  // 7. Save the game state if applicable
-  // 8. Update the UI to reflect the new upgrade level and player's stats
+  const handleUpgrade = (upgrade: Upgrade) => {
+    if (playerCurrencies < upgrade.cost) return;
+    setPlayerCurrencies((prev) => prev - upgrade.cost);
 
-  const handleUpgrade = (name: Upgrades) => {
-    setPlayerUpgrades(updatedPlayerStats(name, playerUpgrades, playerStats));
+    setPlayerUpgrades(updatedPlayerStats(upgrade.name, playerUpgrades));
   };
 
   return (
-    <Box>
-      {playerUpgrades.map((upgrade) => {
-        return (
-          upgrade.currentUpgrades < upgrade.upgradesCap && (
-            <SmallUpgradeBlock
-              key={upgrade.name}
-              icon={<StarIcon sx={{ color: DEFAULT_TEXT_COLOR }} />}
-              description={`Upgrade ${upgrade.name
-                .replace("_", " ")
-                .toLowerCase()} + ${upgrade.upgradeValue}, total: + ${
-                upgrade.currentUpgrades
-              }`}
-              currentUpgrades={upgrade.currentUpgrades}
-              totalUpgrades={upgrade.upgradesCap}
-              onClick={() => handleUpgrade(upgrade.name)}
-            />
-          )
-        );
-      })}
+    <Box sx={{ padding: 2 }}>
+      <Grid container spacing={2}>
+        {playerUpgrades.map((upgrade) => {
+          return (
+            upgrade.currentUpgrades < upgrade.upgradesCap && (
+              <Grid size={{ xs: 12, md: 6 }} key={upgrade.name}>
+                <SmallUpgradeBlock
+                  icon={
+                    <img
+                      src={upgrade.icon}
+                      alt="fireSpot"
+                      height={"54vh"}
+                      width={"54vh"}
+                    />
+                  }
+                  upgrade={upgrade}
+                  canAfford={playerCurrencies < upgrade.cost}
+                  onClick={() => handleUpgrade(upgrade)}
+                />
+              </Grid>
+            )
+          );
+        })}
+      </Grid>
     </Box>
   );
 };

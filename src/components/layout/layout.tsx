@@ -21,11 +21,11 @@ export const Layout = () => {
     <>
       <Grid container sx={{ height: "100vh", width: "100vw" }}>
         {/* Header */}
-        <Grid size={12} sx={{ height: "5%", backgroundColor: HEADER_COLOR }}>
+        <Grid size={12} sx={{ height: "10%", backgroundColor: HEADER_COLOR }}>
           <PageHeader />
         </Grid>
         {/* Sidebar and Main Content */}
-        <Grid container size={12} sx={{ height: "calc(100vh - 5%)" }}>
+        <Grid container size={12} sx={{ height: "calc(100vh - 10%)" }}>
           <Grid
             size={3}
             sx={{ height: "100%", backgroundColor: SIDEBAR_COLOR }}

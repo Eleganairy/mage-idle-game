@@ -1,4 +1,4 @@
-import { Box, Button, Stack } from "@mui/material";
+import { Button, Stack } from "@mui/material";
 import { Paragraph } from "../paragraph";
 import type { JSX } from "react";
 import { DEFAULT_TEXT_COLOR } from "../../constants/colors";
@@ -17,21 +17,19 @@ export const ActionBarItem = ({
   onClick,
 }: ActionBarItemProps) => {
   return (
-    <Box
-      sx={{
-        height: "30px",
-        justifyContent: "space-between",
-        alignItems: "center",
-        display: "flex",
-      }}
-    >
-      <Button onClick={onClick}>
-        <Stack direction={"row"} spacing={3}>
+    <Button onClick={onClick} sx={{ justifyContent: "start" }}>
+      <Stack
+        direction={"row"}
+        justifyContent={"space-between"}
+        alignItems={"center"}
+        height={"30px"}
+      >
+        <Stack direction={"row"} spacing={3} width={"300px"}>
           {icon}
           <Paragraph text={text} color={DEFAULT_TEXT_COLOR} />
         </Stack>
         <Paragraph text={rightText || ""} color={DEFAULT_TEXT_COLOR} />
-      </Button>
-    </Box>
+      </Stack>
+    </Button>
   );
 };

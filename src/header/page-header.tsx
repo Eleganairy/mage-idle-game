@@ -1,3 +1,9 @@
+import { Counter } from "../components/counter";
+
 export const PageHeader = () => {
-    return <div>Header</div>
-}
+  return (
+    <div>
+      <Counter />
+    </div>
+  );
+};

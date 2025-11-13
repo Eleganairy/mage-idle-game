@@ -1,30 +1,37 @@
 import { atom } from "jotai";
-import { Upgrades, type UpgradeType } from "./upgrades.types";
+import { type Upgrade, UpgradeTypes } from "./upgrades.types";
 import { ModifierTypes } from "../player/player.types";
 
-export const playerUpgradesAtom = atom<Array<UpgradeType>>([
+export const playerUpgradesAtom = atom<Array<Upgrade>>([
   {
-    name: Upgrades.ATTACK_DAMAGE,
+    name: "Stronger jaws",
     currentUpgrades: 0,
     upgradesCap: 20,
     upgradeValue: 1,
-    type: ModifierTypes.ADDITIVE,
+    type: UpgradeTypes.ATTACK_DAMAGE,
+    modifierType: ModifierTypes.ADDITIVE,
     cost: 1,
+    icon: "../../../Sword_Pixel_art.png",
   },
   {
-    name: Upgrades.ATTACK_SPEED,
+    name: "Faster reflexes",
     currentUpgrades: 0,
     upgradesCap: 20,
     upgradeValue: 10,
-    type: ModifierTypes.PERCENTILE,
+    type: UpgradeTypes.ATTACK_SPEED,
+    modifierType: ModifierTypes.PERCENTILE,
     cost: 2,
+    icon: "../../../Running_Pixelart.png",
   },
   {
-    name: Upgrades.HEALTH,
+    name: "Heavier bones",
     currentUpgrades: 0,
     upgradesCap: 10,
+    startingValue: 1,
     upgradeValue: 0.2,
-    type: ModifierTypes.MULTIPLICATIVE,
+    type: UpgradeTypes.HEALTH,
+    modifierType: ModifierTypes.MULTIPLICATIVE,
     cost: 5,
+    icon: "../../../Heart_pixelart.png",
   },
 ]);

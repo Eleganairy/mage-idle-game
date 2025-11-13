@@ -1,16 +1,35 @@
 import { atom } from "jotai";
-import type { PlayerStats } from "./player.types";
 import {
   PLAYER_BASE_ATTACK_DAMAGE,
   PLAYER_BASE_ATTACK_SPEED,
+  PLAYER_BASE_ENERGY,
   PLAYER_BASE_HEALTH,
 } from "./player.constants";
+import { playerUpgradesAtom } from "../upgrades/upgrades.atoms";
+import { calculateTotalValue } from "./player.helpers";
+import { UpgradeTypes } from "../upgrades/upgrades.types";
 
-export const playerCurrencyAtom = atom<number>(0);
+export const playerCurrenciesAtom = atom<number>(PLAYER_BASE_ENERGY);
 
-export const playerStatsAtom = atom<PlayerStats>({
-  totalHealth: PLAYER_BASE_HEALTH,
-  totalAttackDamage: PLAYER_BASE_ATTACK_DAMAGE,
-  totalAttackSpeed: PLAYER_BASE_ATTACK_SPEED,
-  energy: 0,
+// Derived atom that calculates total stats based on upgrades
+export const playerStatsAtom = atom((get) => {
+  const upgrades = get(playerUpgradesAtom);
+
+  return {
+    totalHealth: calculateTotalValue(
+      PLAYER_BASE_HEALTH,
+      UpgradeTypes.HEALTH,
+      upgrades
+    ),
+    totalAttackDamage: calculateTotalValue(
+      PLAYER_BASE_ATTACK_DAMAGE,
+      UpgradeTypes.ATTACK_DAMAGE,
+      upgrades
+    ),
+    totalAttackSpeed: calculateTotalValue(
+      PLAYER_BASE_ATTACK_SPEED,
+      UpgradeTypes.ATTACK_SPEED,
+      upgrades
+    ),
+  };
 });

@@ -16,7 +16,7 @@ export const Paragraph = ({ text, color, size }: ParagraphProps) => {
       case "large":
         return "20px";
       case "counter":
-        return "52px";
+        return "64px";
       default:
         return "16px";
     }

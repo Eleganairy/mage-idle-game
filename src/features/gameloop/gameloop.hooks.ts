@@ -1,8 +1,18 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-// Make an attack every set amount of time based on player attack speed
 //TODO: Implement logic for bosses that attack back and other features
-export const useGameLoop = ({
+interface GameLoopContextType {
+  attackProgress: number;
+}
+
+// Ensure the hook returns the typed object
+export const useGameLoop: ({
+  endTime,
+  onTimeEnd,
+}: {
+  endTime: number;
+  onTimeEnd: () => void;
+}) => GameLoopContextType = ({
   endTime,
   onTimeEnd,
 }: {
@@ -13,32 +23,23 @@ export const useGameLoop = ({
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (elapsedTime + 1 >= endTime * 100) {
-        onTimeEnd();
-        setElapsedTime(0);
-        return;
-      }
-      setElapsedTime((prev) => prev + 1);
+      setElapsedTime((prev) => {
+        const newTime = prev + 1;
+
+        if (newTime >= endTime * 100) {
+          onTimeEnd();
+          return 0;
+        }
+
+        return newTime;
+      });
     }, 10);
 
     return () => clearInterval(interval);
-  });
+  }, [endTime, onTimeEnd]);
 
-  return elapsedTime;
-};
+  // Convert elapsed time to progress percentage (0-100)
+  const attackProgress = (elapsedTime / (endTime * 100)) * 100;
 
-interface GameLoopContextType {
-  attackProgress: number;
-}
-
-export const GameLoopContext = createContext<GameLoopContextType | undefined>(
-  undefined
-);
-
-export const useGameLoopContext = () => {
-  const context = useContext(GameLoopContext);
-  if (!context) {
-    throw new Error("useGameLoopContext must be used within GameLoopProvider");
-  }
-  return context;
+  return { attackProgress };
 };

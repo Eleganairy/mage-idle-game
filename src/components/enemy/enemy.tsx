@@ -2,7 +2,7 @@ import { Box, Stack } from "@mui/material";
 import { Paragraph } from "../paragraph";
 import { useAtomValue } from "jotai";
 import { enemyStatsAtom } from "../../features/enemy/enemy.atoms";
-import { useGameLoopContext } from "../../features/gameloop/gameloop.hooks";
+import { useGameLoopContext } from "../../features/gameloop/gameloop.context";
 
 export const Enemy = () => {
   const enemyStats = useAtomValue(enemyStatsAtom);
@@ -11,7 +11,7 @@ export const Enemy = () => {
   const healthPercentage = () =>
     (enemyStats.currentHealth / enemyStats.health) * 200;
 
-  const attackProgressPercentage = () => (attackProgress / 100) * 200;
+  const attackProgressPercentage = () => (attackProgress / 100) * 100;
 
   return (
     <Box
@@ -41,7 +41,7 @@ export const Enemy = () => {
           <Box
             sx={{
               backgroundColor: "orange",
-              width: `${attackProgressPercentage()}px`,
+              width: `${attackProgressPercentage()}%`,
               height: "20px",
             }}
           />
