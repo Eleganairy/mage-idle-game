@@ -8,8 +8,22 @@ import {
 import { playerUpgradesAtom } from "../upgrades/upgrades.atoms";
 import { calculateTotalValue } from "./player.helpers";
 import { UpgradeTypes } from "../upgrades/upgrades.types";
+import type { Generation } from "./player.types";
 
+// Current energy (can go up and down)
 export const playerCurrenciesAtom = atom<number>(PLAYER_BASE_ENERGY);
+
+// Total energy ever earned (only goes up)
+export const playerTotalEnergyEarnedAtom = atom<number>(0);
+
+export const currentGenerationAtom = atom<Generation>({
+  generationNumber: 1,
+  requiredEnergyForNextGeneration: 1000,
+});
+
+export const currentGenerationNumberAtom = atom<number>(
+  (get) => get(currentGenerationAtom).requiredEnergyForNextGeneration
+);
 
 // Track current player health
 export const playerCurrentHealthAtom = atom<number>(PLAYER_BASE_HEALTH);

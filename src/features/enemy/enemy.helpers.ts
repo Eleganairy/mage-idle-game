@@ -1,50 +1,27 @@
-import { useEffect, useState } from "react";
+import type { EnemyStats } from "./enemy.types";
 
-export const useAttack = ({
-  attackSpeed,
-  isAttacking,
-  onAttackComplete,
-}: {
-  attackSpeed: number;
-  isAttacking: boolean;
-  onAttackComplete: () => void;
-}) => {
-  const [playerAttackProgress, setPlayerAttackProgress] = useState(0);
+export const getRandomEnemy = (
+  enemyPool: Record<string, EnemyStats>
+): EnemyStats => {
+  const enemyKeys = Object.keys(enemyPool);
+  const randomIndex = Math.floor(Math.random() * enemyKeys.length);
+  const enemyKey = enemyKeys[randomIndex];
+  const enemy = enemyPool[enemyKey];
 
-  useEffect(() => {
-    let attackInterval: number | undefined;
-    let progressInterval: number | undefined;
+  return {
+    ...enemy,
+    currentHealth: enemy.health, // Reset health
+  };
+};
 
-    if (isAttacking) {
-      const remainingTime = attackSpeed * (1 - playerAttackProgress / 100);
+export const getFirstEnemy = (
+  enemyPool: Record<string, EnemyStats>
+): EnemyStats => {
+  const firstKey = Object.keys(enemyPool)[0];
+  const enemy = enemyPool[firstKey];
 
-      // Start the attack interval with the remaining time
-      attackInterval = setTimeout(() => {
-        onAttackComplete();
-        setPlayerAttackProgress(0);
-
-        // Start a new interval for the next attack
-        attackInterval = setInterval(() => {
-          onAttackComplete();
-          setPlayerAttackProgress(0);
-        }, attackSpeed);
-      }, remainingTime);
-
-      // Start the progress interval
-      progressInterval = setInterval(() => {
-        setPlayerAttackProgress((prevProgress) => {
-          const increment = (100 / attackSpeed) * 10;
-          const newProgress = prevProgress + increment;
-          return Math.min(newProgress, 100);
-        });
-      }, 10);
-    }
-
-    return () => {
-      clearTimeout(attackInterval);
-      clearInterval(progressInterval);
-    };
-  }, [isAttacking, attackSpeed, playerAttackProgress, onAttackComplete]);
-
-  return playerAttackProgress;
+  return {
+    ...enemy,
+    currentHealth: enemy.health,
+  };
 };

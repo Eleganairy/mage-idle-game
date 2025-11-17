@@ -6,6 +6,8 @@ import {
   playerCurrentHealthAtom,
 } from "../../features/player/player.atoms";
 import { useGameLoopContext } from "../../features/gameloop/gameloop.context";
+import { HealthBar } from "../health-bar/health-bar";
+import { ProgressBar } from "../progress-bar";
 import { TYPOGRAPHY_SIZES } from "../../constants/typography";
 
 export const Player = () => {
@@ -13,44 +15,21 @@ export const Player = () => {
   const currentHealth = useAtomValue(playerCurrentHealthAtom);
   const { playerAttackProgress } = useGameLoopContext();
 
-  const healthPercentage = () =>
-    (currentHealth / playerStats.totalHealth) * 200;
-
   return (
     <Box
       sx={{
-        border: "3px solid black",
+        border: "6px solid black",
         height: "700px",
         width: "400px",
-        justifyContent: "center",
         display: "flex",
+        justifyContent: "center",
         alignItems: "center",
       }}
     >
-      <Stack spacing={2} alignItems={"center"}>
-        <Paragraph text={"Player"} size={TYPOGRAPHY_SIZES.title} />
-        <Box sx={{ border: "2px solid black", width: "200px", height: "20px" }}>
-          <Box
-            sx={{
-              backgroundColor: "green",
-              width: `${healthPercentage()}px`,
-              height: "20px",
-            }}
-          />
-        </Box>
-        <Paragraph
-          size={TYPOGRAPHY_SIZES.label}
-          text={`${currentHealth} / ${playerStats.totalHealth}`}
-        />
-        <Box sx={{ border: "2px solid black", width: "200px", height: "20px" }}>
-          <Box
-            sx={{
-              backgroundColor: "orange",
-              width: `${playerAttackProgress}%`,
-              height: "20px",
-            }}
-          />
-        </Box>
+      <Stack spacing={2} alignItems="center">
+        <Paragraph text="Player" size={TYPOGRAPHY_SIZES.title} />
+        <HealthBar current={currentHealth} max={playerStats.totalHealth} />
+        <ProgressBar progress={playerAttackProgress} color="orange" />
       </Stack>
     </Box>
   );

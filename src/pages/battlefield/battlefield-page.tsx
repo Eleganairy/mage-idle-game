@@ -1,40 +1,40 @@
-import { Box, Stack } from "@mui/material";
+import { Box, Button, Stack } from "@mui/material";
 import { Player } from "../../components/player";
 import { Enemy } from "../../components/enemy";
 import { Paragraph } from "../../components/paragraph";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import {
   activeStageNumberAtom,
   activeWorldAtom,
-  highestScoreAtom,
+  gameStateAtom,
+  highestStageAtom,
+  highestWorldAtom,
 } from "../../features/game-state/game-state.atoms";
 import { TYPOGRAPHY_SIZES } from "../../constants/typography";
-import { gameWorlds } from "../../features/game-state/game-state.constants";
 
 export const BattlefieldPage = () => {
-  const currentStageNumber = useAtomValue(activeStageNumberAtom);
-  const highscore = useAtomValue(highestScoreAtom);
+  const activeStageNumber = useAtomValue(activeStageNumberAtom);
+  const activeWorld = useAtomValue(activeWorldAtom);
+  const highestStageNumber = useAtomValue(highestStageAtom);
+  const highestWorldNumber = useAtomValue(highestWorldAtom);
 
-  const [currentWorld, setCurrentWorld] = useAtom(activeWorldAtom);
+  const setGameState = useSetAtom(gameStateAtom);
 
-  const requirementSucceeded =
-    currentWorld.requiredNumberOfStages - currentStageNumber + 1 === 0;
-
-  const getRequiredStageClears = (): string => {
-    if (!requirementSucceeded)
-      return (
-        currentWorld.requiredNumberOfStages -
-        currentStageNumber +
-        1
-      ).toString();
-
-    return "Continue";
-  };
+  // Calculate remaining stages needed
+  const remainingStages = Math.max(
+    0,
+    activeWorld.requiredNumberOfStages - activeStageNumber
+  );
 
   const handleNextWorld = () => {
-    if (requirementSucceeded)
-      //the currentWorldNumber is already one number ahead since JavaScript counts from 0 and I start with world 1
-      setCurrentWorld(gameWorlds[currentWorld.worldNumber]);
+    if (remainingStages > 0) return; // Do nothing if requirements not met
+
+    //the currentWorldNumber is already one number ahead since JavaScript counts from 0 and I start with world 1
+    setGameState((prev) => ({
+      ...prev,
+      activeWorldNumber: prev.activeWorldNumber + 1,
+      activeStageNumber: 1,
+    })); // Reset stage counter for new world
   };
 
   return (
@@ -46,22 +46,31 @@ export const BattlefieldPage = () => {
       >
         <Player />
         <Stack justifyContent={"space-between"}>
-          <button
-            onClick={handleNextWorld}
-            style={{
-              width: "240px",
-              height: "80px",
-              fontSize: TYPOGRAPHY_SIZES.button,
-              fontWeight: "bold",
-              backgroundColor: requirementSucceeded ? "darkgreen" : "darkred",
-              color: "white",
-              border: "none",
-              borderRadius: "5px",
-              cursor: "pointer",
-            }}
-          >
-            {getRequiredStageClears()}
-          </button>
+          <Box>
+            <Paragraph
+              text={`Current World: ${activeWorld.worldNumber}`}
+              size={TYPOGRAPHY_SIZES.button}
+            />
+            <Button
+              variant="contained"
+              onClick={handleNextWorld}
+              disabled={remainingStages > 0}
+              sx={{
+                height: "90px",
+                width: "280px",
+                border: "4px solid black",
+                borderRadius: 0,
+                backgroundColor: remainingStages > 0 ? "gray" : "darkred",
+                fontFamily: "Pixelify Sans",
+                fontSize: TYPOGRAPHY_SIZES.paragraph,
+                marginTop: 3,
+              }}
+            >
+              {remainingStages > 0
+                ? `Complete ${remainingStages} more stages`
+                : "Next World"}
+            </Button>
+          </Box>
           <Box
             sx={{
               display: "flex",
@@ -71,11 +80,11 @@ export const BattlefieldPage = () => {
             }}
           >
             <Paragraph
-              text={`Stage ${currentStageNumber}`}
+              text={`Stage ${activeStageNumber}`}
               size={TYPOGRAPHY_SIZES.label}
             />
             <Paragraph
-              text={`Highscore: ${highscore[0]} - ${highscore[1]}`}
+              text={`Highscore: ${highestWorldNumber} - ${highestStageNumber}`}
               size={TYPOGRAPHY_SIZES.label}
             />
           </Box>

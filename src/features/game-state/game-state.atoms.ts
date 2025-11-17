@@ -1,21 +1,51 @@
 import { atom } from "jotai";
-import { Pages, type World } from "./game-state.types";
-import { ENEMY_LIST_WORLD_1 } from "../enemy/enemy.constants";
-import type { EnemyStats } from "../enemy/enemy.types";
+import { gameWorlds } from "./game-state.constants";
+import { Pages, type GameState } from "./game-state.types";
 
-export const activePageAtom = atom<Pages>(Pages.battlefield);
-
-export const activeStageNumberAtom = atom<number>(1);
-
-export const activeWorldAtom = atom<World>({
-  worldNumber: 1,
-  enemyPool: ENEMY_LIST_WORLD_1,
-  requiredNumberOfStages: 10,
+// Consolidate related atoms
+export const gameStateAtom = atom<GameState>({
+  activePage: Pages.battlefield,
+  activeStageNumber: 1,
+  activeWorldNumber: 1,
+  highestStageNumber: 1,
+  highestWorldNumber: 1,
 });
 
-export const activeWorldEnemyPoolAtom = atom<Record<string, EnemyStats>>(
-  (get) => get(activeWorldAtom).enemyPool
+// Derived atoms
+export const activeWorldAtom = atom((get) => {
+  const gameState = get(gameStateAtom);
+  return (
+    gameWorlds.find((w) => w.worldNumber === gameState.activeWorldNumber) ||
+    gameWorlds[0]
+  );
+});
+
+export const activeStageNumberAtom = atom(
+  (get) => get(gameStateAtom).activeStageNumber,
+  (get, set, newStage: number) => {
+    const current = get(gameStateAtom);
+    set(gameStateAtom, { ...current, activeStageNumber: newStage });
+  }
 );
 
-//First value is the world and the second value is the stage of that world
-export const highestScoreAtom = atom<Array<number>>([0, 0]);
+export const highestStageAtom = atom(
+  (get) => get(gameStateAtom).highestStageNumber,
+  (get, set, newHighest: number) => {
+    const current = get(gameStateAtom);
+    set(gameStateAtom, {
+      ...current,
+      highestStageNumber: Math.max(current.highestStageNumber, newHighest),
+    });
+  }
+);
+
+export const highestWorldAtom = atom(
+  (get) => get(gameStateAtom).highestWorldNumber,
+  (get, set, newHighest: number) => {
+    const current = get(gameStateAtom);
+    set(gameStateAtom, {
+      ...current,
+      highestWorldNumber: Math.max(current.highestWorldNumber, newHighest),
+    });
+  }
+);

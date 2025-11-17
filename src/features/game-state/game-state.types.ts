@@ -1,5 +1,13 @@
 import type { EnemyStats } from "../enemy/enemy.types";
 
+export interface GameState {
+  activePage: Pages;
+  activeStageNumber: number;
+  activeWorldNumber: number;
+  highestStageNumber: number;
+  highestWorldNumber: number;
+}
+
 export type Stage = {
   stageNumber: number;
   healthMulitplier: number;
@@ -17,12 +25,4 @@ export enum Pages {
   battlefield = "BATTLEFIELD",
   upgrades = "UPGRADES",
   settings = "SETTINGS",
-}
-
-export interface GameState {
-  activePage: Pages;
-  activeStage: number;
-  highestStage: number;
-  activeWorld: number;
-  highestWorld: number;
 }

@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 import { ActionBar } from "../action-bar";
-import { PageHeader } from "../../header";
+import { PageHeader } from "../header";
 import { BattlefieldPage } from "../../pages/battlefield";
 import {
   BACKGROUND_COLOR,
@@ -9,13 +9,13 @@ import {
 } from "../../constants/colors";
 import { UpgradesPage } from "../../pages/upgrades";
 import { useAtomValue } from "jotai";
-import { activePageAtom } from "../../features/game-state/game-state.atoms";
+import { gameStateAtom } from "../../features/game-state/game-state.atoms";
 import { Pages } from "../../features/game-state/game-state.types";
 
 // import background from "../../../public/mage-idle-game-background.png";
 
 export const Layout = () => {
-  const currentPage = useAtomValue(activePageAtom);
+  const currentPage = useAtomValue(gameStateAtom).activePage;
 
   return (
     <>

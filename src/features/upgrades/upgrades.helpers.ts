@@ -1,14 +1,18 @@
-import { type Upgrade } from "./upgrades.types";
+import { UpgradeTypes, type Upgrade } from "./upgrades.types";
 
-export const updatedPlayerStats = (name: string, playerUpgrades: Upgrade[]) => {
+export const updatedPlayerStats = (
+  upgradeType: UpgradeTypes,
+  playerUpgrades: Upgrade[]
+): Upgrade[] => {
   return playerUpgrades.map((upgrade) => {
-    // Gets the correct upgrade from the upgrades array
-    if (upgrade.name !== name) return upgrade;
-    // Applies the upgrade
+    if (upgrade.name !== upgradeType) {
+      return upgrade;
+    }
+
     return {
       ...upgrade,
       currentUpgrades: upgrade.currentUpgrades + 1,
-      cost: Math.floor(upgrade.cost * 1.5),
+      cost: Math.floor((upgrade.cost *= 0.15)),
     };
   });
 };

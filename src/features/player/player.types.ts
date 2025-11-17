@@ -4,6 +4,11 @@ export type PlayerStats = {
   totalAttackSpeed: number;
 };
 
+export type Generation = {
+  generationNumber: number;
+  requiredEnergyForNextGeneration: number;
+};
+
 export type Modifier = {
   name: string;
   value: number;

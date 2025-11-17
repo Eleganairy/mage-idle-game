@@ -27,8 +27,8 @@ export const ENEMY_LIST_WORLD_2: Record<string, EnemyStats> = {
     health: 30,
     currentHealth: 30,
     currencyDropReward: 4,
-    attackDamage: 5,
-    attackSpeed: 3000,
+    attackDamage: 2,
+    attackSpeed: 800,
     icon: "../../../goblin.png",
   },
   SIMON: {
@@ -36,7 +36,28 @@ export const ENEMY_LIST_WORLD_2: Record<string, EnemyStats> = {
     health: 50,
     currentHealth: 50,
     currencyDropReward: 4,
-    attackDamage: 20,
+    attackDamage: 10,
+    attackSpeed: 3000,
+    icon: "../../../goblin.png",
+  },
+};
+
+export const ENEMY_LIST_WORLD_3: Record<string, EnemyStats> = {
+  PENGUIN: {
+    name: "PENGUIN",
+    health: 60,
+    currentHealth: 60,
+    currencyDropReward: 10,
+    attackDamage: 1,
+    attackSpeed: 300,
+    icon: "../../../goblin.png",
+  },
+  YETI: {
+    name: "Snow Yeti",
+    health: 200,
+    currentHealth: 200,
+    currencyDropReward: 20,
+    attackDamage: 30,
     attackSpeed: 5000,
     icon: "../../../goblin.png",
   },
