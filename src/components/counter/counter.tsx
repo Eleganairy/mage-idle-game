@@ -1,9 +1,17 @@
-import { useAtomValue } from "jotai";
+import { TYPOGRAPHY_SIZES } from "../../constants/typography";
 import { Paragraph } from "../paragraph";
-import { playerCurrenciesAtom } from "../../features/player/player.atoms";
 
-export const Counter = () => {
-  const energy = useAtomValue(playerCurrenciesAtom);
+export type CounterProps = {
+  name: string;
+  value: number;
+};
 
-  return <Paragraph color="white" text={energy?.toString()} size={"counter"} />;
+export const Counter = ({ name, value }: CounterProps) => {
+  return (
+    <Paragraph
+      color="white"
+      text={`${name}: ${value || 0}`}
+      size={TYPOGRAPHY_SIZES.counter}
+    />
+  );
 };

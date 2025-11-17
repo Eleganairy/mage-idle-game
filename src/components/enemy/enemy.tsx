@@ -1,17 +1,19 @@
 import { Box, Stack } from "@mui/material";
 import { Paragraph } from "../paragraph";
 import { useAtomValue } from "jotai";
-import { enemyStatsAtom } from "../../features/enemy/enemy.atoms";
+import { activeEnemyAtom } from "../../features/enemy/enemy.atoms";
 import { useGameLoopContext } from "../../features/gameloop/gameloop.context";
+import { TYPOGRAPHY_SIZES } from "../../constants/typography";
 
 export const Enemy = () => {
-  const enemyStats = useAtomValue(enemyStatsAtom);
-  const { attackProgress } = useGameLoopContext();
+  const activeEnemy = useAtomValue(activeEnemyAtom);
+  const { enemyAttackProgress } = useGameLoopContext();
 
   const healthPercentage = () =>
-    (enemyStats.currentHealth / enemyStats.health) * 200;
+    (activeEnemy.currentHealth / activeEnemy.health) * 200;
 
-  const attackProgressPercentage = () => (attackProgress / 100) * 100;
+  const playerAttackProgressPercentage = () =>
+    (enemyAttackProgress / 100) * 100;
 
   return (
     <Box
@@ -25,6 +27,7 @@ export const Enemy = () => {
       }}
     >
       <Stack spacing={2} alignItems={"center"}>
+        <Paragraph text={activeEnemy.name} size={TYPOGRAPHY_SIZES.title} />
         <Box sx={{ border: "2px solid black", width: "200px", height: "20px" }}>
           <Box
             sx={{
@@ -35,13 +38,14 @@ export const Enemy = () => {
           />
         </Box>
         <Paragraph
-          text={`${enemyStats.currentHealth} / ${enemyStats.health}`}
+          size={TYPOGRAPHY_SIZES.label}
+          text={`${activeEnemy.currentHealth} / ${activeEnemy.health}`}
         />
         <Box sx={{ border: "2px solid black", width: "200px", height: "20px" }}>
           <Box
             sx={{
-              backgroundColor: "orange",
-              width: `${attackProgressPercentage()}%`,
+              backgroundColor: "red",
+              width: `${playerAttackProgressPercentage()}%`,
               height: "20px",
             }}
           />

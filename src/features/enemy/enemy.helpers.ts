@@ -9,30 +9,30 @@ export const useAttack = ({
   isAttacking: boolean;
   onAttackComplete: () => void;
 }) => {
-  const [attackProgress, setAttackProgress] = useState(0);
+  const [playerAttackProgress, setPlayerAttackProgress] = useState(0);
 
   useEffect(() => {
     let attackInterval: number | undefined;
     let progressInterval: number | undefined;
 
     if (isAttacking) {
-      const remainingTime = attackSpeed * (1 - attackProgress / 100);
+      const remainingTime = attackSpeed * (1 - playerAttackProgress / 100);
 
       // Start the attack interval with the remaining time
       attackInterval = setTimeout(() => {
         onAttackComplete();
-        setAttackProgress(0);
+        setPlayerAttackProgress(0);
 
         // Start a new interval for the next attack
         attackInterval = setInterval(() => {
           onAttackComplete();
-          setAttackProgress(0);
+          setPlayerAttackProgress(0);
         }, attackSpeed);
       }, remainingTime);
 
       // Start the progress interval
       progressInterval = setInterval(() => {
-        setAttackProgress((prevProgress) => {
+        setPlayerAttackProgress((prevProgress) => {
           const increment = (100 / attackSpeed) * 10;
           const newProgress = prevProgress + increment;
           return Math.min(newProgress, 100);
@@ -44,7 +44,7 @@ export const useAttack = ({
       clearTimeout(attackInterval);
       clearInterval(progressInterval);
     };
-  }, [isAttacking, attackSpeed, attackProgress, onAttackComplete]);
+  }, [isAttacking, attackSpeed, playerAttackProgress, onAttackComplete]);
 
-  return attackProgress;
+  return playerAttackProgress;
 };

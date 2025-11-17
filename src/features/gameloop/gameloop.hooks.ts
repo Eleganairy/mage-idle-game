@@ -1,45 +1,67 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
-//TODO: Implement logic for bosses that attack back and other features
-interface GameLoopContextType {
-  attackProgress: number;
-}
-
-// Ensure the hook returns the typed object
-export const useGameLoop: ({
+export const useGameLoop = ({
   endTime,
   onTimeEnd,
+  resetTrigger,
 }: {
   endTime: number;
   onTimeEnd: () => void;
-}) => GameLoopContextType = ({
-  endTime,
-  onTimeEnd,
-}: {
-  endTime: number;
-  onTimeEnd: () => void;
+  resetTrigger?: number; // Optional trigger to reset the loop
 }) => {
-  const [elapsedTime, setElapsedTime] = useState(0);
+  const [attackProgress, setAttackProgress] = useState(0);
+  const lastTickRef = useRef<number>(Date.now());
+  const accumulatedTimeRef = useRef<number>(0);
+
+  // Reset the loop when resetTrigger changes
+  useEffect(() => {
+    if (resetTrigger !== undefined) {
+      accumulatedTimeRef.current = 0;
+      setAttackProgress(0);
+      lastTickRef.current = Date.now();
+    }
+  }, [resetTrigger]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setElapsedTime((prev) => {
-        const newTime = prev + 1;
+    const tick = () => {
+      const now = Date.now();
+      const deltaTime = now - lastTickRef.current;
+      lastTickRef.current = now;
 
-        if (newTime >= endTime * 100) {
+      accumulatedTimeRef.current += deltaTime;
+
+      // Calculate how many attacks should have happened
+      const attackDuration = endTime * 1000; // Convert to milliseconds
+      const completedAttacks = Math.floor(
+        accumulatedTimeRef.current / attackDuration
+      );
+
+      if (completedAttacks > 0) {
+        // Trigger attacks for all completed cycles
+        for (let i = 0; i < completedAttacks; i++) {
           onTimeEnd();
-          return 0;
         }
+        accumulatedTimeRef.current -= completedAttacks * attackDuration;
+      }
 
-        return newTime;
-      });
-    }, 10);
+      // Calculate progress as percentage (0-100)
+      const progress = (accumulatedTimeRef.current / attackDuration) * 100;
+      setAttackProgress(Math.min(progress, 100));
+    };
 
-    return () => clearInterval(interval);
+    // Use requestAnimationFrame for smooth updates
+    let animationFrameId: number;
+    const loop = () => {
+      tick();
+      animationFrameId = requestAnimationFrame(loop);
+    };
+
+    animationFrameId = requestAnimationFrame(loop);
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+    };
   }, [endTime, onTimeEnd]);
 
-  // Convert elapsed time to progress percentage (0-100)
-  const attackProgress = (elapsedTime / (endTime * 100)) * 100;
-
-  return { attackProgress };
+  return attackProgress;
 };

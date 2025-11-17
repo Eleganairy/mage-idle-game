@@ -1,8 +1,13 @@
 import { createContext, useContext } from "react";
 
-export const GameLoopContext = createContext<
-  { attackProgress: number } | undefined
->(undefined);
+interface GameLoopContextType {
+  playerAttackProgress: number;
+  enemyAttackProgress: number;
+}
+
+export const GameLoopContext = createContext<GameLoopContextType | undefined>(
+  undefined
+);
 
 export const useGameLoopContext = () => {
   const context = useContext(GameLoopContext);

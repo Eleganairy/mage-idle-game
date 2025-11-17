@@ -11,6 +11,9 @@ import { UpgradeTypes } from "../upgrades/upgrades.types";
 
 export const playerCurrenciesAtom = atom<number>(PLAYER_BASE_ENERGY);
 
+// Track current player health
+export const playerCurrentHealthAtom = atom<number>(PLAYER_BASE_HEALTH);
+
 // Derived atom that calculates total stats based on upgrades
 export const playerStatsAtom = atom((get) => {
   const upgrades = get(playerUpgradesAtom);
@@ -32,4 +35,22 @@ export const playerStatsAtom = atom((get) => {
       upgrades
     ),
   };
+});
+
+// Atom to track previous max health
+const previousMaxHealthAtom = atom(PLAYER_BASE_HEALTH);
+
+// Write-only atom that automatically increases current health when max health increases
+export const syncHealthOnUpgradeAtom = atom(null, (get, set) => {
+  const currentMaxHealth = get(playerStatsAtom).totalHealth;
+  const previousMaxHealth = get(previousMaxHealthAtom);
+  const healthIncrease = currentMaxHealth - previousMaxHealth;
+
+  if (healthIncrease > 0) {
+    // Increase current health by the same amount max health increased
+    set(playerCurrentHealthAtom, (prev) => prev + healthIncrease);
+  }
+
+  // Update previous max health
+  set(previousMaxHealthAtom, currentMaxHealth);
 });

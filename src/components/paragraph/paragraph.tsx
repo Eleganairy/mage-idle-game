@@ -1,33 +1,18 @@
 import { Box } from "@mui/material";
+import type { TYPOGRAPHY_SIZES } from "../../constants/typography";
 
 type ParagraphProps = {
   text: string;
   color?: string;
-  size?: "small" | "medium" | "large" | "counter";
+  size: TYPOGRAPHY_SIZES;
 };
 
 export const Paragraph = ({ text, color, size }: ParagraphProps) => {
-  const fontSize = () => {
-    switch (size) {
-      case "small":
-        return "12px";
-      case "medium":
-        return "16px";
-      case "large":
-        return "20px";
-      case "counter":
-        return "64px";
-      default:
-        return "16px";
-    }
-  };
-
   return (
     <Box
       sx={{
         color: color,
-        fontSize: fontSize(),
-        fontWeight: size === "counter" ? "600" : "400",
+        fontSize: size,
       }}
     >
       {text}

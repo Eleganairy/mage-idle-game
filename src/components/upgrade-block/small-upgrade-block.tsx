@@ -8,6 +8,7 @@ import {
 } from "../../constants/colors";
 import type { Upgrade } from "../../features/upgrades/upgrades.types";
 import { ModifierTypes } from "../../features/player/player.types";
+import { TYPOGRAPHY_SIZES } from "../../constants/typography";
 
 export type SmallUpgradeBlockProps = {
   icon: JSX.Element;
@@ -86,8 +87,16 @@ export const SmallUpgradeBlock = ({
             borderRadius: "0.5vh",
           }}
         >
-          <Paragraph text={`${upgrade.name}`} color={DEFAULT_TEXT_COLOR} />
-          <Paragraph text={getUpgradeText()} color={DEFAULT_TEXT_COLOR} />
+          <Paragraph
+            text={`${upgrade.name}`}
+            color={DEFAULT_TEXT_COLOR}
+            size={TYPOGRAPHY_SIZES.paragraph}
+          />
+          <Paragraph
+            text={getUpgradeText()}
+            color={DEFAULT_TEXT_COLOR}
+            size={TYPOGRAPHY_SIZES.paragraph}
+          />
         </Box>
         <Box
           sx={{
@@ -100,6 +109,7 @@ export const SmallUpgradeBlock = ({
           <Paragraph
             text={`${upgrade.currentUpgrades} / ${upgrade.upgradesCap}`}
             color={DEFAULT_TEXT_COLOR}
+            size={TYPOGRAPHY_SIZES.paragraph}
           />
           <Button
             onClick={onClick}
@@ -108,7 +118,8 @@ export const SmallUpgradeBlock = ({
               margin: "10px",
               height: "5vh",
               width: "10vh",
-              fontSize: "2vh",
+              fontSize: TYPOGRAPHY_SIZES.label,
+              fontFamily: "Pixelify Sans",
               color: DEFAULT_TEXT_COLOR,
             }}
           >
