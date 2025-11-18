@@ -6,11 +6,12 @@ import { useAtomValue, useSetAtom } from "jotai";
 import {
   activeStageNumberAtom,
   activeWorldAtom,
-  gameStateAtom,
   highestStageAtom,
   highestWorldAtom,
+  nextWorldAtom,
 } from "../../features/game-state/game-state.atoms";
 import { TYPOGRAPHY_SIZES } from "../../constants/typography";
+import { gameWorlds } from "../../features/game-state/game-state.constants";
 
 export const BattlefieldPage = () => {
   const activeStageNumber = useAtomValue(activeStageNumberAtom);
@@ -18,7 +19,7 @@ export const BattlefieldPage = () => {
   const highestStageNumber = useAtomValue(highestStageAtom);
   const highestWorldNumber = useAtomValue(highestWorldAtom);
 
-  const setGameState = useSetAtom(gameStateAtom);
+  const goToNextWorld = useSetAtom(nextWorldAtom);
 
   // Calculate remaining stages needed
   const remainingStages = Math.max(
@@ -26,15 +27,11 @@ export const BattlefieldPage = () => {
     activeWorld.requiredNumberOfStages - activeStageNumber
   );
 
-  const handleNextWorld = () => {
-    if (remainingStages > 0) return; // Do nothing if requirements not met
+  const nextWorldExists = gameWorlds[activeWorld.worldNumber] !== undefined; // Check if next world exists
 
-    //the currentWorldNumber is already one number ahead since JavaScript counts from 0 and I start with world 1
-    setGameState((prev) => ({
-      ...prev,
-      activeWorldNumber: prev.activeWorldNumber + 1,
-      activeStageNumber: 1,
-    })); // Reset stage counter for new world
+  const handleNextWorld = () => {
+    if (remainingStages > 0) return;
+    goToNextWorld(); // This handles both world change and enemy reset
   };
 
   return (
@@ -51,25 +48,27 @@ export const BattlefieldPage = () => {
               text={`Current World: ${activeWorld.worldNumber}`}
               size={TYPOGRAPHY_SIZES.button}
             />
-            <Button
-              variant="contained"
-              onClick={handleNextWorld}
-              disabled={remainingStages > 0}
-              sx={{
-                height: "90px",
-                width: "280px",
-                border: "4px solid black",
-                borderRadius: 0,
-                backgroundColor: remainingStages > 0 ? "gray" : "darkred",
-                fontFamily: "Pixelify Sans",
-                fontSize: TYPOGRAPHY_SIZES.paragraph,
-                marginTop: 3,
-              }}
-            >
-              {remainingStages > 0
-                ? `Complete ${remainingStages} more stages`
-                : "Next World"}
-            </Button>
+            {nextWorldExists && (
+              <Button
+                variant="contained"
+                onClick={handleNextWorld}
+                disabled={remainingStages > 0}
+                sx={{
+                  height: "90px",
+                  width: "280px",
+                  border: "4px solid black",
+                  borderRadius: 0,
+                  backgroundColor: remainingStages > 0 ? "gray" : "darkred",
+                  fontFamily: "Pixelify Sans",
+                  fontSize: TYPOGRAPHY_SIZES.paragraph,
+                  marginTop: 3,
+                }}
+              >
+                {remainingStages > 0
+                  ? `Complete ${remainingStages} more stages`
+                  : "Next World"}
+              </Button>
+            )}
           </Box>
           <Box
             sx={{

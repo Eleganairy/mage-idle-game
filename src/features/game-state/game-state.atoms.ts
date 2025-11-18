@@ -1,6 +1,8 @@
 import { atom } from "jotai";
 import { gameWorlds } from "./game-state.constants";
 import { Pages, type GameState } from "./game-state.types";
+import { getRandomEnemy } from "../enemy/enemy.helpers";
+import { activeEnemyAtom } from "../enemy/enemy.atoms";
 
 // Consolidate related atoms
 export const gameStateAtom = atom<GameState>({
@@ -18,6 +20,28 @@ export const activeWorldAtom = atom((get) => {
     gameWorlds.find((w) => w.worldNumber === gameState.activeWorldNumber) ||
     gameWorlds[0]
   );
+});
+
+// Write-only atom to handle world transition
+export const nextWorldAtom = atom(null, (get, set) => {
+  const currentState = get(gameStateAtom);
+  const nextWorldNumber = currentState.activeWorldNumber + 1;
+  const nextWorld = gameWorlds.find((w) => w.worldNumber === nextWorldNumber);
+
+  if (nextWorld) {
+    // Update game state
+    set(gameStateAtom, {
+      ...currentState,
+      activeWorldNumber: nextWorldNumber,
+      activeStageNumber: 1,
+    });
+
+    // Set random enemy from new world
+    if (nextWorld.enemyPool) {
+      const newEnemy = getRandomEnemy(nextWorld.enemyPool);
+      set(activeEnemyAtom, newEnemy);
+    }
+  }
 });
 
 export const activeStageNumberAtom = atom(

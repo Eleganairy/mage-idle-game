@@ -23,6 +23,9 @@ export type World = {
 
 export enum Pages {
   battlefield = "BATTLEFIELD",
+  WorldSelection = "WORLD_SELECTION",
   upgrades = "UPGRADES",
+  pokedex = "POKEDEX",
+  traits = "TRAITS",
   settings = "SETTINGS",
 }

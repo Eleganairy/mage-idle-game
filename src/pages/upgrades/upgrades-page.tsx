@@ -6,7 +6,10 @@ import {
   playerCurrenciesAtom,
   syncHealthOnUpgradeAtom,
 } from "../../features/player/player.atoms";
-import type { Upgrade } from "../../features/upgrades/upgrades.types";
+import type {
+  Upgrade,
+  UpgradeTypes,
+} from "../../features/upgrades/upgrades.types";
 import { updatedPlayerStats } from "../../features/upgrades/upgrades.helpers";
 
 export const UpgradesPage = () => {
@@ -18,7 +21,9 @@ export const UpgradesPage = () => {
     if (playerCurrencies < upgrade.cost) return;
 
     setPlayerCurrencies((prev) => prev - upgrade.cost);
-    setPlayerUpgrades(updatedPlayerStats(upgrade.name, playerUpgrades));
+    setPlayerUpgrades(
+      updatedPlayerStats(upgrade.name as UpgradeTypes, playerUpgrades)
+    );
 
     // Sync current health with new max health
     syncHealth();

@@ -19,6 +19,15 @@ export const ENEMY_LIST_WORLD_1: Record<string, EnemyStats> = {
     attackSpeed: 1000,
     icon: "../../../goblin.png",
   },
+  RAT: {
+    name: "Rat",
+    health: 15,
+    currentHealth: 15,
+    currencyDropReward: 2,
+    attackDamage: 1,
+    attackSpeed: 1000,
+    icon: "../../../rat.png",
+  },
 };
 
 export const ENEMY_LIST_WORLD_2: Record<string, EnemyStats> = {
@@ -40,11 +49,29 @@ export const ENEMY_LIST_WORLD_2: Record<string, EnemyStats> = {
     attackSpeed: 3000,
     icon: "../../../goblin.png",
   },
+  ALIEN: {
+    name: "Alien",
+    health: 50,
+    currentHealth: 50,
+    currencyDropReward: 4,
+    attackDamage: 10,
+    attackSpeed: 3000,
+    icon: "../../../goblin.png",
+  },
 };
 
 export const ENEMY_LIST_WORLD_3: Record<string, EnemyStats> = {
   PENGUIN: {
-    name: "PENGUIN",
+    name: "Penguin",
+    health: 60,
+    currentHealth: 60,
+    currencyDropReward: 10,
+    attackDamage: 1,
+    attackSpeed: 300,
+    icon: "../../../goblin.png",
+  },
+  BIRD: {
+    name: "Snow Bird",
     health: 60,
     currentHealth: 60,
     currencyDropReward: 10,
@@ -61,4 +88,10 @@ export const ENEMY_LIST_WORLD_3: Record<string, EnemyStats> = {
     attackSpeed: 5000,
     icon: "../../../goblin.png",
   },
+};
+
+export const ALL_ENEMIES: Record<string, EnemyStats> = {
+  ...ENEMY_LIST_WORLD_1,
+  ...ENEMY_LIST_WORLD_2,
+  ...ENEMY_LIST_WORLD_3,
 };

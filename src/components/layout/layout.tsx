@@ -11,6 +11,8 @@ import { UpgradesPage } from "../../pages/upgrades";
 import { useAtomValue } from "jotai";
 import { gameStateAtom } from "../../features/game-state/game-state.atoms";
 import { Pages } from "../../features/game-state/game-state.types";
+import { Pokedex } from "../../pages/pokedex";
+import { WorldSelectionPage } from "../../pages/world-selection";
 
 // import background from "../../../public/mage-idle-game-background.png";
 
@@ -43,8 +45,16 @@ export const Layout = () => {
               switch (currentPage) {
                 case Pages.battlefield:
                   return <BattlefieldPage />;
+                case Pages.WorldSelection:
+                  return <WorldSelectionPage />;
                 case Pages.upgrades:
                   return <UpgradesPage />;
+                case Pages.pokedex:
+                  return <Pokedex />;
+                case Pages.traits:
+                  return <div>Traits Page (to be implemented)</div>;
+                case Pages.settings:
+                  return <div>Settings Page (to be implemented)</div>;
                 default:
                   return null;
               }

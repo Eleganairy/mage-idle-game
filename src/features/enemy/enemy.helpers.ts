@@ -1,4 +1,12 @@
+import { ALL_ENEMIES } from "./enemy.constants";
 import type { EnemyStats } from "./enemy.types";
+
+// Get the key from ALL_ENEMIES that matches the enemy name
+export const getEnemyKeyByName = (enemyName: string): string | undefined => {
+  return Object.keys(ALL_ENEMIES).find(
+    (key) => ALL_ENEMIES[key].name === enemyName
+  );
+};
 
 export const getRandomEnemy = (
   enemyPool: Record<string, EnemyStats>

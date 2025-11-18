@@ -10,7 +10,7 @@ export const Counter = ({ name, value }: CounterProps) => {
   return (
     <Paragraph
       color="white"
-      text={`${name}: ${value || 0}`}
+      text={`${name}: ${value}`}
       size={TYPOGRAPHY_SIZES.counter}
     />
   );

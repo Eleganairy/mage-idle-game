@@ -1,19 +1,20 @@
 import { Box, Stack } from "@mui/material";
 import { ActionBarItem } from ".";
 import { Paragraph } from "../paragraph";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { DEFAULT_TEXT_COLOR, LABEL_TEXT_COLOR } from "../../constants/colors";
+import { LABEL_TEXT_COLOR } from "../../constants/colors";
 import { useAtomValue, useSetAtom } from "jotai";
 import { Pages } from "../../features/game-state/game-state.types";
 import {
-  activePageAtom,
   activeStageNumberAtom,
   activeWorldAtom,
+  gameStateAtom,
 } from "../../features/game-state/game-state.atoms";
 import { TYPOGRAPHY_SIZES } from "../../constants/typography";
+import { gameWorlds } from "../../features/game-state/game-state.constants";
+import { BASE_PLAYER_UPGRADES } from "../../features/upgrades/upgrades.constants";
 
 export const ActionBar = () => {
-  const setActivePage = useSetAtom(activePageAtom);
+  const setGameState = useSetAtom(gameStateAtom);
   const activeStageNumber = useAtomValue(activeStageNumberAtom);
   const activeWorld = useAtomValue(activeWorldAtom);
 
@@ -23,7 +24,22 @@ export const ActionBar = () => {
         <ActionBarItem
           text="Battlefield"
           rightText={`Stage ${activeWorld.worldNumber} - ${activeStageNumber}`}
-          onClick={() => setActivePage(Pages.battlefield)}
+          onClick={() =>
+            setGameState((prev) => ({
+              ...prev,
+              activePage: Pages.battlefield,
+            }))
+          }
+        />
+        <ActionBarItem
+          text="World Selection"
+          rightText={`${activeWorld.worldNumber} / ${gameWorlds.length}`}
+          onClick={() =>
+            setGameState((prev) => ({
+              ...prev,
+              activePage: Pages.WorldSelection,
+            }))
+          }
         />
       </Box>
       <Stack spacing={2} sx={{ padding: 2 }}>
@@ -34,6 +50,7 @@ export const ActionBar = () => {
         />
         <ActionBarItem
           text="Upgrades"
+          rightText={`total: ${BASE_PLAYER_UPGRADES.length}`}
           icon={
             <img
               src={"../../../Sword_Pixel_art.png"}
@@ -42,7 +59,12 @@ export const ActionBar = () => {
               width={"28vh"}
             />
           }
-          onClick={() => setActivePage(Pages.upgrades)}
+          onClick={() =>
+            setGameState((prev) => ({
+              ...prev,
+              activePage: Pages.upgrades,
+            }))
+          }
         />
       </Stack>
       <Stack spacing={2} sx={{ padding: 2 }}>
@@ -52,12 +74,62 @@ export const ActionBar = () => {
           size={TYPOGRAPHY_SIZES.label}
         />
         <ActionBarItem
-          text="Skill Tree"
-          icon={<DeleteIcon sx={{ color: DEFAULT_TEXT_COLOR }} />}
+          text="Pokedex"
+          icon={
+            <img
+              src={"../../../Sword_Pixel_art.png"}
+              alt={"Sword Icon"}
+              height={"28vh"}
+              width={"28vh"}
+            />
+          }
+          onClick={() =>
+            setGameState((prev) => ({
+              ...prev,
+              activePage: Pages.pokedex,
+            }))
+          }
         />
         <ActionBarItem
-          text="Skill Tree"
-          icon={<DeleteIcon sx={{ color: DEFAULT_TEXT_COLOR }} />}
+          text="Traits"
+          icon={
+            <img
+              src={"../../../Sword_Pixel_art.png"}
+              alt={"Sword Icon"}
+              height={"28vh"}
+              width={"28vh"}
+            />
+          }
+          onClick={() =>
+            setGameState((prev) => ({
+              ...prev,
+              activePage: Pages.traits,
+            }))
+          }
+        />
+      </Stack>
+      <Stack spacing={2} sx={{ padding: 2 }}>
+        <Paragraph
+          text="This generation"
+          color={LABEL_TEXT_COLOR}
+          size={TYPOGRAPHY_SIZES.label}
+        />
+        <ActionBarItem
+          text="Settings"
+          icon={
+            <img
+              src={"../../../Sword_Pixel_art.png"}
+              alt={"Sword Icon"}
+              height={"28vh"}
+              width={"28vh"}
+            />
+          }
+          onClick={() =>
+            setGameState((prev) => ({
+              ...prev,
+              activePage: Pages.settings,
+            }))
+          }
         />
       </Stack>
     </Stack>

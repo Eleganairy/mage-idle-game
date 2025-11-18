@@ -1,7 +1,7 @@
 import { type ReactNode, useCallback, useState } from "react";
 import { useGameLoop } from "./gameloop.hooks";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import { activeEnemyAtom } from "../enemy/enemy.atoms";
+import { activeEnemyAtom, slainEnemiesCountAtom } from "../enemy/enemy.atoms";
 import {
   playerStatsAtom,
   playerCurrentHealthAtom,
@@ -17,6 +17,7 @@ import {
   highestWorldAtom,
 } from "../game-state/game-state.atoms";
 import type { EnemyStats } from "../enemy/enemy.types";
+import { getEnemyKeyByName } from "../enemy/enemy.helpers";
 
 export const GameLoopProvider = ({ children }: { children: ReactNode }) => {
   const playerStats = useAtomValue(playerStatsAtom);
@@ -28,12 +29,12 @@ export const GameLoopProvider = ({ children }: { children: ReactNode }) => {
   const [activeStageNumber, setActiveStageNumber] = useAtom(
     activeStageNumberAtom
   );
-  // const [highscore, setHighscore] = useAtom(highscoreAtom);
 
   const setPlayerTotalEnergyEarned = useSetAtom(playerTotalEnergyEarnedAtom);
   const setPlayerCurrencies = useSetAtom(playerCurrenciesAtom);
   const setPlayerHealth = useSetAtom(playerCurrentHealthAtom);
   const setGameState = useSetAtom(gameStateAtom);
+  const setSlainEnemiesCount = useSetAtom(slainEnemiesCountAtom);
 
   const [resetTrigger, setResetTrigger] = useState(0);
 
@@ -42,6 +43,15 @@ export const GameLoopProvider = ({ children }: { children: ReactNode }) => {
       setPlayerCurrencies((curr) => curr + enemy.currencyDropReward);
       setPlayerTotalEnergyEarned((total) => total + enemy.currencyDropReward);
       setActiveStageNumber(activeStageNumber + 1);
+
+      // Get the enemy key by name
+      const enemyKey = getEnemyKeyByName(enemy.name);
+      if (enemyKey) {
+        setSlainEnemiesCount((prev) => ({
+          ...prev,
+          [enemyKey]: (prev[enemyKey] || 0) + 1,
+        }));
+      }
 
       // Get random enemy from pool
       const enemyKeys = Object.keys(activeWorldEnemyPool);
@@ -60,6 +70,7 @@ export const GameLoopProvider = ({ children }: { children: ReactNode }) => {
       setPlayerTotalEnergyEarned,
       setActiveStageNumber,
       activeStageNumber,
+      setSlainEnemiesCount,
       activeWorldEnemyPool,
     ]
   );
