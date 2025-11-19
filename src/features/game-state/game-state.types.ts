@@ -3,9 +3,10 @@ import type { EnemyStats } from "../enemy/enemy.types";
 export interface GameState {
   activePage: Pages;
   activeStageNumber: number;
-  activeWorldNumber: number;
+  activeAreaNumber: number;
   highestStageNumber: number;
-  highestWorldNumber: number;
+  highestAreaNumber: number;
+  unlockedAreas: number;
 }
 
 export type Stage = {
@@ -15,15 +16,15 @@ export type Stage = {
   attackSpeedMultiplier: number;
 };
 
-export type World = {
-  worldNumber: number;
+export type Area = {
+  AreaNumber: number;
   enemyPool: Record<string, EnemyStats>;
   requiredNumberOfStages: number;
 };
 
 export enum Pages {
   battlefield = "BATTLEFIELD",
-  WorldSelection = "WORLD_SELECTION",
+  AreaSelection = "Area_SELECTION",
   upgrades = "UPGRADES",
   pokedex = "POKEDEX",
   traits = "TRAITS",

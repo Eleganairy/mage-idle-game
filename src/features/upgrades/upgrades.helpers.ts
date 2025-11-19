@@ -1,4 +1,4 @@
-import { UpgradeTypes, type Upgrade } from "./upgrades.types";
+import { type Upgrade, UpgradeTypes } from "./upgrades.types";
 
 export const updatedPlayerStats = (
   upgradeType: UpgradeTypes,
@@ -9,10 +9,13 @@ export const updatedPlayerStats = (
       return upgrade;
     }
 
+    // Calculate new cost with multiplier
+    const newCost = Math.floor(upgrade.cost * upgrade.costMultiplier);
+
     return {
       ...upgrade,
       currentUpgrades: upgrade.currentUpgrades + 1,
-      cost: Math.floor((upgrade.cost *= 0.15)),
+      cost: newCost, // Update cost for next purchase
     };
   });
 };

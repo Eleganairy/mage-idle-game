@@ -6,24 +6,24 @@ import { useAtomValue, useSetAtom } from "jotai";
 import { Pages } from "../../features/game-state/game-state.types";
 import {
   activeStageNumberAtom,
-  activeWorldAtom,
+  activeAreaAtom,
   gameStateAtom,
 } from "../../features/game-state/game-state.atoms";
 import { TYPOGRAPHY_SIZES } from "../../constants/typography";
-import { gameWorlds } from "../../features/game-state/game-state.constants";
+import { gameAreas } from "../../features/game-state/game-state.constants";
 import { BASE_PLAYER_UPGRADES } from "../../features/upgrades/upgrades.constants";
 
 export const ActionBar = () => {
   const setGameState = useSetAtom(gameStateAtom);
   const activeStageNumber = useAtomValue(activeStageNumberAtom);
-  const activeWorld = useAtomValue(activeWorldAtom);
+  const activeArea = useAtomValue(activeAreaAtom);
 
   return (
     <Stack spacing={2}>
       <Box sx={{ padding: 2 }}>
         <ActionBarItem
           text="Battlefield"
-          rightText={`Stage ${activeWorld.worldNumber} - ${activeStageNumber}`}
+          rightText={`Stage ${activeArea.AreaNumber} - ${activeStageNumber}`}
           onClick={() =>
             setGameState((prev) => ({
               ...prev,
@@ -32,12 +32,12 @@ export const ActionBar = () => {
           }
         />
         <ActionBarItem
-          text="World Selection"
-          rightText={`${activeWorld.worldNumber} / ${gameWorlds.length}`}
+          text="Area Selection"
+          rightText={`${activeArea.AreaNumber} / ${gameAreas.length}`}
           onClick={() =>
             setGameState((prev) => ({
               ...prev,
-              activePage: Pages.WorldSelection,
+              activePage: Pages.AreaSelection,
             }))
           }
         />
@@ -53,7 +53,7 @@ export const ActionBar = () => {
           rightText={`total: ${BASE_PLAYER_UPGRADES.length}`}
           icon={
             <img
-              src={"../../../Sword_Pixel_art.png"}
+              src={"../../../sword.png"}
               alt={"Sword Icon"}
               height={"28vh"}
               width={"28vh"}
@@ -77,7 +77,7 @@ export const ActionBar = () => {
           text="Pokedex"
           icon={
             <img
-              src={"../../../Sword_Pixel_art.png"}
+              src={"../../../sword.png"}
               alt={"Sword Icon"}
               height={"28vh"}
               width={"28vh"}
@@ -94,7 +94,7 @@ export const ActionBar = () => {
           text="Traits"
           icon={
             <img
-              src={"../../../Sword_Pixel_art.png"}
+              src={"../../../sword.png"}
               alt={"Sword Icon"}
               height={"28vh"}
               width={"28vh"}
@@ -118,7 +118,7 @@ export const ActionBar = () => {
           text="Settings"
           icon={
             <img
-              src={"../../../Sword_Pixel_art.png"}
+              src={"../../../sword.png"}
               alt={"Sword Icon"}
               height={"28vh"}
               width={"28vh"}

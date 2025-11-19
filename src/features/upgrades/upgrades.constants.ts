@@ -1,36 +1,38 @@
+import { type Upgrade, UpgradeTypes } from "./upgrades.types";
 import { ModifierTypes } from "../player/player.types";
-import { UpgradeTypes } from "./upgrades.types";
 
-export const BASE_PLAYER_UPGRADES = [
+export const BASE_PLAYER_UPGRADES: Upgrade[] = [
   {
-    name: "Stronger jaws",
+    name: "Stronger bones",
+    type: UpgradeTypes.ATTACK_DAMAGE,
+    cost: 5, // Set initial cost
+    costMultiplier: 1.3,
+    upgradeValue: 1,
+    modifierType: ModifierTypes.ADDITIVE,
     currentUpgrades: 0,
     upgradesCap: 20,
-    upgradeValue: 1,
-    type: UpgradeTypes.ATTACK_DAMAGE,
-    modifierType: ModifierTypes.ADDITIVE,
-    cost: 1,
-    icon: "../../../Sword_Pixel_art.png",
+    icon: "../../../sword.png",
   },
   {
     name: "Faster reflexes",
-    currentUpgrades: 0,
-    upgradesCap: 20,
-    upgradeValue: 10,
     type: UpgradeTypes.ATTACK_SPEED,
+    cost: 10, // Set initial cost
+    costMultiplier: 1.3,
+    upgradeValue: 10,
     modifierType: ModifierTypes.PERCENTILE,
-    cost: 2,
-    icon: "../../../Running_Pixelart.png",
-  },
-  {
-    name: "Heavier bones",
     currentUpgrades: 0,
     upgradesCap: 10,
-    startingValue: 1,
-    upgradeValue: 0.2,
+    icon: "../../../speed.png",
+  },
+  {
+    name: "Tougher skin",
     type: UpgradeTypes.HEALTH,
+    cost: 20, // Set initial cost
+    costMultiplier: 1.8,
+    upgradeValue: 0.2,
     modifierType: ModifierTypes.MULTIPLICATIVE,
-    cost: 5,
-    icon: "../../../Heart_pixelart.png",
+    currentUpgrades: 0,
+    upgradesCap: 5,
+    icon: "../../../heart.png",
   },
 ];

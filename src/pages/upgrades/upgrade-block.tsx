@@ -1,6 +1,5 @@
 import { Box, Button, Stack } from "@mui/material";
 import type { JSX } from "react";
-import { Paragraph } from "../paragraph";
 import {
   CARD_COLOR,
   CARD_SECONDARY_COLOR,
@@ -9,6 +8,7 @@ import {
 import type { Upgrade } from "../../features/upgrades/upgrades.types";
 import { ModifierTypes } from "../../features/player/player.types";
 import { TYPOGRAPHY_SIZES } from "../../constants/typography";
+import { Paragraph } from "../../components/paragraph";
 
 export type SmallUpgradeBlockProps = {
   icon: JSX.Element;
@@ -17,7 +17,7 @@ export type SmallUpgradeBlockProps = {
   onClick: () => void;
 };
 
-export const SmallUpgradeBlock = ({
+export const UpgradeBlock = ({
   icon,
   upgrade,
   canAfford,
@@ -114,7 +114,7 @@ export const SmallUpgradeBlock = ({
           <Button
             onClick={onClick}
             sx={{
-              backgroundColor: canAfford ? "darkred" : "darkgreen",
+              backgroundColor: canAfford ? "darkgreen" : "darkred",
               margin: "10px",
               height: "5vh",
               width: "10vh",

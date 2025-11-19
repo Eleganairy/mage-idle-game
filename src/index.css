@@ -8,6 +8,8 @@
   font-family: "Pixelify Sans", sans-serif;
 }
 
-body {
+html, body {
+  overscroll-behavior: none;
+  overflow: hidden;
   margin: 0;
 }

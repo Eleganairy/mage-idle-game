@@ -1,26 +1,42 @@
 import {
-  ENEMY_LIST_WORLD_1,
-  ENEMY_LIST_WORLD_2,
-  ENEMY_LIST_WORLD_3,
+  ENEMY_LIST_AREA_1,
+  ENEMY_LIST_AREA_2,
+  ENEMY_LIST_AREA_3,
+  ENEMY_LIST_AREA_4,
 } from "../enemy/enemy.constants";
-import type { World } from "./game-state.types";
+import { getRequiredStagesForArea } from "./game-state.helpers";
+import { Pages, type Area } from "./game-state.types";
 
 export const BASE_REQUIRED_STAGES = 20;
 
-export const gameWorlds: Array<World> = [
+export const DEFAULT_GAME_STATE = {
+  activePage: Pages.battlefield,
+  activeStageNumber: 1,
+  activeAreaNumber: 1,
+  highestStageNumber: 1,
+  highestAreaNumber: 1,
+  unlockedAreas: 1,
+};
+
+export const gameAreas: Array<Area> = [
   {
-    worldNumber: 1,
-    enemyPool: ENEMY_LIST_WORLD_1,
-    requiredNumberOfStages: BASE_REQUIRED_STAGES,
+    AreaNumber: 1,
+    enemyPool: ENEMY_LIST_AREA_1,
+    requiredNumberOfStages: getRequiredStagesForArea(1),
   },
   {
-    worldNumber: 2,
-    enemyPool: ENEMY_LIST_WORLD_2,
-    requiredNumberOfStages: BASE_REQUIRED_STAGES,
+    AreaNumber: 2,
+    enemyPool: ENEMY_LIST_AREA_2,
+    requiredNumberOfStages: getRequiredStagesForArea(2),
   },
   {
-    worldNumber: 3,
-    enemyPool: ENEMY_LIST_WORLD_3,
-    requiredNumberOfStages: BASE_REQUIRED_STAGES,
+    AreaNumber: 3,
+    enemyPool: ENEMY_LIST_AREA_3,
+    requiredNumberOfStages: getRequiredStagesForArea(3),
+  },
+  {
+    AreaNumber: 4,
+    enemyPool: ENEMY_LIST_AREA_4,
+    requiredNumberOfStages: getRequiredStagesForArea(4),
   },
 ];

@@ -11,46 +11,52 @@ import { UpgradesPage } from "../../pages/upgrades";
 import { useAtomValue } from "jotai";
 import { gameStateAtom } from "../../features/game-state/game-state.atoms";
 import { Pages } from "../../features/game-state/game-state.types";
-import { Pokedex } from "../../pages/pokedex";
-import { WorldSelectionPage } from "../../pages/world-selection";
-
-// import background from "../../../public/mage-idle-game-background.png";
+import { PokedexPage } from "../../pages/pokedex";
+import { AreaSelectionPage } from "../../pages/area-selection";
 
 export const Layout = () => {
   const currentPage = useAtomValue(gameStateAtom).activePage;
 
   return (
     <>
-      <Grid container sx={{ height: "100vh", width: "100vw" }}>
+      <Grid container sx={{ height: "100vh" }}>
         {/* Header */}
         <Grid size={12} sx={{ height: "10%", backgroundColor: HEADER_COLOR }}>
           <PageHeader />
         </Grid>
         {/* Sidebar and Main Content */}
-        <Grid container size={12} sx={{ height: "calc(100vh - 10%)" }}>
+        <Grid container size={12} sx={{ height: "90%" }}>
           <Grid
             size={3}
-            sx={{ height: "100%", backgroundColor: SIDEBAR_COLOR }}
+            sx={{
+              width: "25%",
+              height: "100%",
+              backgroundColor: SIDEBAR_COLOR,
+              position: "sticky", // Keeps the sidebar fixed
+              top: 0,
+            }}
           >
             <ActionBar />
           </Grid>
           <Grid
             size={9}
             sx={{
+              width: "75%",
               height: "100%",
               backgroundColor: BACKGROUND_COLOR,
+              overflowY: "auto", // Enables scrolling for overflowing content
             }}
           >
             {(() => {
               switch (currentPage) {
                 case Pages.battlefield:
                   return <BattlefieldPage />;
-                case Pages.WorldSelection:
-                  return <WorldSelectionPage />;
+                case Pages.AreaSelection:
+                  return <AreaSelectionPage />;
                 case Pages.upgrades:
                   return <UpgradesPage />;
                 case Pages.pokedex:
-                  return <Pokedex />;
+                  return <PokedexPage />;
                 case Pages.traits:
                   return <div>Traits Page (to be implemented)</div>;
                 case Pages.settings:

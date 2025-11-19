@@ -1,4 +1,4 @@
-import { type ReactNode, useCallback, useState } from "react";
+import { type ReactNode, useCallback, useMemo, useState } from "react";
 import { useGameLoop } from "./gameloop.hooks";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { activeEnemyAtom, slainEnemiesCountAtom } from "../enemy/enemy.atoms";
@@ -11,67 +11,116 @@ import { playerCurrenciesAtom } from "../player/player.atoms";
 import { GameLoopContext } from "./gameloop.context";
 import {
   activeStageNumberAtom,
-  activeWorldAtom,
+  activeAreaAtom,
   gameStateAtom,
   highestStageAtom,
-  highestWorldAtom,
+  highestAreaAtom,
 } from "../game-state/game-state.atoms";
-import type { EnemyStats } from "../enemy/enemy.types";
-import { getEnemyKeyByName } from "../enemy/enemy.helpers";
+import { SlainThreshold, type EnemyStats } from "../enemy/enemy.types";
+import {
+  getEnemyKeyByName,
+  getWeightedRandomEnemy,
+  precomputeWeightedEnemyPool,
+} from "../enemy/enemy.helpers";
+import { RARITY_THRESHOLDS } from "../enemy/enemy.constants";
 
 export const GameLoopProvider = ({ children }: { children: ReactNode }) => {
   const playerStats = useAtomValue(playerStatsAtom);
-  const activeWorldEnemyPool = useAtomValue(activeWorldAtom).enemyPool;
+  const activeArea = useAtomValue(activeAreaAtom);
   const highestStageNumber = useAtomValue(highestStageAtom);
-  const highestWorldNumber = useAtomValue(highestWorldAtom);
+  const highestAreaNumber = useAtomValue(highestAreaAtom);
 
   const [activeEnemy, setActiveEnemy] = useAtom(activeEnemyAtom);
   const [activeStageNumber, setActiveStageNumber] = useAtom(
     activeStageNumberAtom
+  );
+  const [slainEnemiesCount, setSlainEnemiesCount] = useAtom(
+    slainEnemiesCountAtom
   );
 
   const setPlayerTotalEnergyEarned = useSetAtom(playerTotalEnergyEarnedAtom);
   const setPlayerCurrencies = useSetAtom(playerCurrenciesAtom);
   const setPlayerHealth = useSetAtom(playerCurrentHealthAtom);
   const setGameState = useSetAtom(gameStateAtom);
-  const setSlainEnemiesCount = useSetAtom(slainEnemiesCountAtom);
 
   const [resetTrigger, setResetTrigger] = useState(0);
 
+  // Precompute the weighted enemy pool for the current area
+  const weightedEnemyPool = useMemo(
+    () => precomputeWeightedEnemyPool(activeArea.enemyPool),
+    [activeArea.enemyPool]
+  );
+
   const handleEnemyDeath = useCallback(
     (enemy: EnemyStats) => {
-      setPlayerCurrencies((curr) => curr + enemy.currencyDropReward);
-      setPlayerTotalEnergyEarned((total) => total + enemy.currencyDropReward);
+      const enemyKey = getEnemyKeyByName(enemy.name);
+      if (!enemyKey) return;
+
+      const currentArea = slainEnemiesCount[activeArea.AreaNumber];
+      const enemyData = currentArea[enemyKey];
+      const newCount = enemyData.count + 1;
+      const thresholds = RARITY_THRESHOLDS[enemy.rarity];
+
+      setSlainEnemiesCount(() => {
+        // Determine the new threshold
+        let newThreshold = enemyData.thresholdCrossed;
+
+        Object.entries(thresholds).forEach(([threshold, value]) => {
+          if (newCount >= value) {
+            newThreshold = threshold as SlainThreshold;
+          }
+        });
+
+        return {
+          ...slainEnemiesCount,
+          [activeArea.AreaNumber]: {
+            ...currentArea,
+            [enemyKey]: {
+              count: newCount,
+              thresholdCrossed: newThreshold,
+            },
+          },
+        };
+      });
+
+      const totalCurrencyDropReward = () => {
+        switch (enemyData.thresholdCrossed) {
+          case SlainThreshold.bronze:
+            return enemy.currencyDropReward * 2;
+          case SlainThreshold.silver:
+            return enemy.currencyDropReward * 5;
+          case SlainThreshold.gold:
+            return enemy.currencyDropReward * 10;
+          default:
+            return enemy.currencyDropReward;
+        }
+      };
+
+      setPlayerCurrencies((curr) => curr + totalCurrencyDropReward());
+      setPlayerTotalEnergyEarned((total) => total + totalCurrencyDropReward());
       setActiveStageNumber(activeStageNumber + 1);
 
-      // Get the enemy key by name
-      const enemyKey = getEnemyKeyByName(enemy.name);
-      if (enemyKey) {
-        setSlainEnemiesCount((prev) => ({
-          ...prev,
-          [enemyKey]: (prev[enemyKey] || 0) + 1,
-        }));
-      }
-
-      // Get random enemy from pool
-      const enemyKeys = Object.keys(activeWorldEnemyPool);
-      const randomIndex = Math.floor(Math.random() * enemyKeys.length);
-      const newEnemyKey = enemyKeys[randomIndex];
+      console.log("CurrencyEarned:", totalCurrencyDropReward());
 
       setResetTrigger((prev) => prev + 1);
 
+      // Select a random enemy from the precomputed weighted pool
+      const newEnemy = getWeightedRandomEnemy(weightedEnemyPool);
+
       return {
-        ...activeWorldEnemyPool[newEnemyKey],
-        currentHealth: activeWorldEnemyPool[newEnemyKey].health,
+        ...newEnemy,
+        currentHealth: newEnemy.health, // Reset health to full
       };
     },
     [
+      slainEnemiesCount,
+      activeArea.AreaNumber,
+      setSlainEnemiesCount,
       setPlayerCurrencies,
       setPlayerTotalEnergyEarned,
       setActiveStageNumber,
       activeStageNumber,
-      setSlainEnemiesCount,
-      activeWorldEnemyPool,
+      weightedEnemyPool,
     ]
   );
 
@@ -79,27 +128,30 @@ export const GameLoopProvider = ({ children }: { children: ReactNode }) => {
     setGameState((prev) => ({
       ...prev,
       highestStageNumber: Math.max(highestStageNumber, activeStageNumber - 1),
-      highestWorldNumber: Math.max(highestWorldNumber, prev.activeWorldNumber),
+      highestAreaNumber: Math.max(highestAreaNumber, prev.activeAreaNumber),
     }));
     setActiveStageNumber(1);
-    setActiveEnemy(activeWorldEnemyPool[Object.keys(activeWorldEnemyPool)[0]]);
+    setActiveEnemy(activeArea.enemyPool[Object.keys(activeArea.enemyPool)[0]]);
     setResetTrigger((prev) => prev + 1);
     return playerStats.totalHealth;
   }, [
     setGameState,
     setActiveStageNumber,
     setActiveEnemy,
-    activeWorldEnemyPool,
+    activeArea,
     playerStats.totalHealth,
     highestStageNumber,
     activeStageNumber,
-    highestWorldNumber,
+    highestAreaNumber,
   ]);
 
   const handlePlayerAttack = useCallback(() => {
     setActiveEnemy((prev) => {
       const newHealth = prev.currentHealth - playerStats.totalAttackDamage;
-      if (newHealth <= 0) return handleEnemyDeath(prev);
+      if (newHealth <= 0) {
+        const newEnemy = handleEnemyDeath(prev);
+        return newEnemy || prev;
+      }
 
       return {
         ...prev,

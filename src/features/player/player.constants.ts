@@ -3,7 +3,7 @@ import type { Generation } from "./player.types";
 export const PLAYER_BASE_ATTACK_DAMAGE = 1;
 export const PLAYER_BASE_ATTACK_SPEED = 1000;
 export const PLAYER_BASE_HEALTH = 100;
-export const PLAYER_BASE_ENERGY = 0;
+export const PLAYER_BASE_ENERGY = 100;
 
 export const GENERATIONS: Generation[] = [
   {
