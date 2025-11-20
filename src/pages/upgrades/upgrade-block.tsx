@@ -1,10 +1,6 @@
 import { Box, Button, Stack } from "@mui/material";
 import type { JSX } from "react";
-import {
-  CARD_COLOR,
-  CARD_SECONDARY_COLOR,
-  DEFAULT_TEXT_COLOR,
-} from "../../constants/colors";
+import * as Colors from "../../constants/colors";
 import type { Upgrade } from "../../features/upgrades/upgrades.types";
 import { ModifierTypes } from "../../features/player/player.types";
 import { TYPOGRAPHY_SIZES } from "../../constants/typography";
@@ -65,7 +61,7 @@ export const UpgradeBlock = ({
         padding: "10px",
         width: "90%",
         height: "10vh",
-        backgroundColor: CARD_COLOR,
+        backgroundColor: Colors.CARD_COLOR,
         borderRadius: "0.5vh",
       }}
     >
@@ -79,7 +75,7 @@ export const UpgradeBlock = ({
           sx={{
             width: "60%",
             height: "10vh",
-            backgroundColor: CARD_SECONDARY_COLOR,
+            backgroundColor: Colors.CARD_SECONDARY_COLOR,
             justifyContent: "center",
             display: "flex",
             flexDirection: "column",
@@ -89,12 +85,12 @@ export const UpgradeBlock = ({
         >
           <Paragraph
             text={`${upgrade.name}`}
-            color={DEFAULT_TEXT_COLOR}
+            color={Colors.DEFAULT_TEXT_COLOR}
             size={TYPOGRAPHY_SIZES.paragraph}
           />
           <Paragraph
             text={getUpgradeText()}
-            color={DEFAULT_TEXT_COLOR}
+            color={Colors.DEFAULT_TEXT_COLOR}
             size={TYPOGRAPHY_SIZES.paragraph}
           />
         </Box>
@@ -108,19 +104,21 @@ export const UpgradeBlock = ({
         >
           <Paragraph
             text={`${upgrade.currentUpgrades} / ${upgrade.upgradesCap}`}
-            color={DEFAULT_TEXT_COLOR}
+            color={Colors.DEFAULT_TEXT_COLOR}
             size={TYPOGRAPHY_SIZES.paragraph}
           />
           <Button
             onClick={onClick}
             sx={{
-              backgroundColor: canAfford ? "darkgreen" : "darkred",
+              backgroundColor: canAfford
+                ? Colors.ACCENT_SUCCESS
+                : Colors.ACCENT_ERROR,
               margin: "10px",
               height: "5vh",
               width: "10vh",
               fontSize: TYPOGRAPHY_SIZES.label,
               fontFamily: "Pixelify Sans",
-              color: DEFAULT_TEXT_COLOR,
+              color: Colors.DEFAULT_TEXT_COLOR,
             }}
           >
             {upgrade.cost}

@@ -27,6 +27,7 @@ export enum Pages {
   AreaSelection = "Area_SELECTION",
   upgrades = "UPGRADES",
   pokedex = "POKEDEX",
+  brain = "BRAIN",
   traits = "TRAITS",
   settings = "SETTINGS",
 }

@@ -21,8 +21,8 @@ export const ENEMY_LIST_AREA_1: Record<string, EnemyStats> = {
     icon: "../../../slime.png",
     rarity: EnemyRarity.common,
   },
-  GOBLIN: {
-    name: "Goblin",
+  SLUG: {
+    name: "Slug",
     health: 15,
     currentHealth: 15,
     currencyDropReward: 2,
@@ -31,8 +31,8 @@ export const ENEMY_LIST_AREA_1: Record<string, EnemyStats> = {
     icon: "../../../goblin.png",
     rarity: EnemyRarity.common,
   },
-  RAT: {
-    name: "Rat",
+  OOZE: {
+    name: "Ooze",
     health: 15,
     currentHealth: 15,
     currencyDropReward: 2,
@@ -41,8 +41,8 @@ export const ENEMY_LIST_AREA_1: Record<string, EnemyStats> = {
     icon: "../../../rat.png",
     rarity: EnemyRarity.rare,
   },
-  MOUSE: {
-    name: "Mouse",
+  GLOOP: {
+    name: "Gloop",
     health: 15,
     currentHealth: 15,
     currencyDropReward: 2,
@@ -51,8 +51,8 @@ export const ENEMY_LIST_AREA_1: Record<string, EnemyStats> = {
     icon: "../../../rat.png",
     rarity: EnemyRarity.rare,
   },
-  PUPPY: {
-    name: "Puppy",
+  GUNK: {
+    name: "Gunk",
     health: 15,
     currentHealth: 15,
     currencyDropReward: 2,
@@ -64,8 +64,8 @@ export const ENEMY_LIST_AREA_1: Record<string, EnemyStats> = {
 };
 
 export const ENEMY_LIST_AREA_2: Record<string, EnemyStats> = {
-  TROLL: {
-    name: "Troll",
+  BEETLE: {
+    name: "Beetle",
     health: 30,
     currentHealth: 30,
     currencyDropReward: 4,
@@ -74,8 +74,18 @@ export const ENEMY_LIST_AREA_2: Record<string, EnemyStats> = {
     icon: "../../../goblin.png",
     rarity: EnemyRarity.common,
   },
-  SIMON: {
-    name: "Simon",
+  CRICKET: {
+    name: "Cricket",
+    health: 30,
+    currentHealth: 30,
+    currencyDropReward: 4,
+    attackDamage: 2,
+    attackSpeed: 800,
+    icon: "../../../goblin.png",
+    rarity: EnemyRarity.common,
+  },
+  WORM: {
+    name: "Worm",
     health: 50,
     currentHealth: 50,
     currencyDropReward: 4,
@@ -84,8 +94,8 @@ export const ENEMY_LIST_AREA_2: Record<string, EnemyStats> = {
     icon: "../../../goblin.png",
     rarity: EnemyRarity.common,
   },
-  ALIEN: {
-    name: "Alien",
+  ANT: {
+    name: "Ant",
     health: 50,
     currentHealth: 50,
     currencyDropReward: 4,
@@ -94,8 +104,8 @@ export const ENEMY_LIST_AREA_2: Record<string, EnemyStats> = {
     icon: "../../../goblin.png",
     rarity: EnemyRarity.rare,
   },
-  LION: {
-    name: "Lion",
+  BEE: {
+    name: "Bee",
     health: 50,
     currentHealth: 50,
     currencyDropReward: 4,
@@ -104,8 +114,8 @@ export const ENEMY_LIST_AREA_2: Record<string, EnemyStats> = {
     icon: "../../../goblin.png",
     rarity: EnemyRarity.rare,
   },
-  TIGER: {
-    name: "Tiger",
+  MOTH: {
+    name: "Moth",
     health: 50,
     currentHealth: 50,
     currencyDropReward: 4,
@@ -129,6 +139,16 @@ export const ENEMY_LIST_AREA_3: Record<string, EnemyStats> = {
   },
   BIRD: {
     name: "Snow Bird",
+    health: 60,
+    currentHealth: 60,
+    currencyDropReward: 10,
+    attackDamage: 1,
+    attackSpeed: 300,
+    icon: "../../../goblin.png",
+    rarity: EnemyRarity.common,
+  },
+  POLAR_BEAR: {
+    name: "Polar Bear",
     health: 60,
     currentHealth: 60,
     currencyDropReward: 10,
@@ -180,6 +200,16 @@ export const ENEMY_LIST_AREA_4: Record<string, EnemyStats> = {
     icon: "../../../goblin.png",
     rarity: EnemyRarity.common,
   },
+  CROCODILE: {
+    name: "Crocodile",
+    health: 60,
+    currentHealth: 60,
+    currencyDropReward: 10,
+    attackDamage: 1,
+    attackSpeed: 300,
+    icon: "../../../goblin.png",
+    rarity: EnemyRarity.common,
+  },
   SNAKE: {
     name: "Snake",
     health: 60,
@@ -222,6 +252,69 @@ export const ENEMY_LIST_AREA_4: Record<string, EnemyStats> = {
   },
 };
 
+export const ENEMY_LIST_AREA_5: Record<string, EnemyStats> = {
+  DEMON: {
+    name: "Demon",
+    health: 60,
+    currentHealth: 60,
+    currencyDropReward: 10,
+    attackDamage: 1,
+    attackSpeed: 300,
+    icon: "../../../goblin.png",
+    rarity: EnemyRarity.common,
+  },
+  IMP: {
+    name: "Imp",
+    health: 60,
+    currentHealth: 60,
+    currencyDropReward: 10,
+    attackDamage: 1,
+    attackSpeed: 300,
+    icon: "../../../goblin.png",
+    rarity: EnemyRarity.common,
+  },
+  DEVIL: {
+    name: "Devil",
+    health: 60,
+    currentHealth: 60,
+    currencyDropReward: 10,
+    attackDamage: 1,
+    attackSpeed: 300,
+    icon: "../../../goblin.png",
+    rarity: EnemyRarity.common,
+  },
+  ELEMENTAL: {
+    name: "Elemental",
+    health: 200,
+    currentHealth: 200,
+    currencyDropReward: 20,
+    attackDamage: 30,
+    attackSpeed: 5000,
+    icon: "../../../goblin.png",
+    rarity: EnemyRarity.rare,
+  },
+  DJINN: {
+    name: "Djinn",
+    health: 200,
+    currentHealth: 200,
+    currencyDropReward: 20,
+    attackDamage: 30,
+    attackSpeed: 5000,
+    icon: "../../../goblin.png",
+    rarity: EnemyRarity.rare,
+  },
+  ALMIGHTY_SIMON: {
+    name: "ALmighty Simon",
+    health: 200,
+    currentHealth: 200,
+    currencyDropReward: 20,
+    attackDamage: 30,
+    attackSpeed: 5000,
+    icon: "../../../goblin.png",
+    rarity: EnemyRarity.legendary,
+  },
+};
+
 export const RARITY_WEIGHTS: Record<EnemyRarity, number> = {
   [EnemyRarity.common]: 70, // 70% chance for common enemies
   [EnemyRarity.rare]: 20, // 8% chance for rare enemies
@@ -254,4 +347,5 @@ export const ALL_ENEMIES: Record<string, EnemyStats> = {
   ...ENEMY_LIST_AREA_2,
   ...ENEMY_LIST_AREA_3,
   ...ENEMY_LIST_AREA_4,
+  ...ENEMY_LIST_AREA_5,
 };

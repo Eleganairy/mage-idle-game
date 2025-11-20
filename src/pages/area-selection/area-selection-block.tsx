@@ -1,5 +1,10 @@
 import { Box } from "@mui/material";
 import type { Area } from "../../features/game-state/game-state.types";
+import {
+  ACCENT_ERROR,
+  ACCENT_SUCCESS,
+  DISABLED_OVERLAY,
+} from "../../constants/colors";
 
 export type BlockState = "locked" | "unlocked" | "active";
 
@@ -17,13 +22,13 @@ export const AreaSelectionBlock = ({
   const getBackgroundColor = () => {
     switch (blockState) {
       case "locked":
-        return "gray";
+        return DISABLED_OVERLAY;
       case "unlocked":
-        return "darkred";
+        return ACCENT_ERROR;
       case "active":
-        return "darkgreen";
+        return ACCENT_SUCCESS;
       default:
-        return "gray";
+        return DISABLED_OVERLAY;
     }
   };
 

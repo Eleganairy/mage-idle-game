@@ -12,6 +12,7 @@ import {
 } from "../../features/game-state/game-state.atoms";
 import { TYPOGRAPHY_SIZES } from "../../constants/typography";
 import { gameAreas } from "../../features/game-state/game-state.constants";
+import * as Colors from "../../constants/colors";
 
 export const BattlefieldPage = () => {
   const activeStageNumber = useAtomValue(activeStageNumberAtom);
@@ -58,7 +59,14 @@ export const BattlefieldPage = () => {
                   width: "280px",
                   border: "4px solid black",
                   borderRadius: 0,
-                  backgroundColor: remainingStages > 0 ? "gray" : "darkred",
+                  color:
+                    remainingStages > 0
+                      ? Colors.DISABLED_TEXT_COLOR
+                      : Colors.DARK_TEXT_COLOR,
+                  backgroundColor:
+                    remainingStages > 0
+                      ? Colors.DISABLED_OVERLAY
+                      : Colors.ACCENT_WARNING,
                   fontFamily: "Pixelify Sans",
                   fontSize: TYPOGRAPHY_SIZES.paragraph,
                   marginTop: 3,

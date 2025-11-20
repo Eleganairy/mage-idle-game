@@ -4,8 +4,7 @@ import { PageHeader } from "../header";
 import { BattlefieldPage } from "../../pages/battlefield";
 import {
   BACKGROUND_COLOR,
-  HEADER_COLOR,
-  SIDEBAR_COLOR,
+  SECONDARY_BACKGROUND_COLOR,
 } from "../../constants/colors";
 import { UpgradesPage } from "../../pages/upgrades";
 import { useAtomValue } from "jotai";
@@ -13,15 +12,23 @@ import { gameStateAtom } from "../../features/game-state/game-state.atoms";
 import { Pages } from "../../features/game-state/game-state.types";
 import { PokedexPage } from "../../pages/pokedex";
 import { AreaSelectionPage } from "../../pages/area-selection";
+import { BrainPage } from "../../pages/brain";
+import { TraitsPage } from "../../pages/traits";
 
 export const Layout = () => {
   const currentPage = useAtomValue(gameStateAtom).activePage;
 
   return (
     <>
-      <Grid container sx={{ height: "100vh" }}>
+      <Grid container sx={{ height: "100vh", width: "100%" }}>
         {/* Header */}
-        <Grid size={12} sx={{ height: "10%", backgroundColor: HEADER_COLOR }}>
+        <Grid
+          size={12}
+          sx={{
+            height: "10%",
+            backgroundColor: SECONDARY_BACKGROUND_COLOR,
+          }}
+        >
           <PageHeader />
         </Grid>
         {/* Sidebar and Main Content */}
@@ -31,7 +38,7 @@ export const Layout = () => {
             sx={{
               width: "25%",
               height: "100%",
-              backgroundColor: SIDEBAR_COLOR,
+              backgroundColor: SECONDARY_BACKGROUND_COLOR,
               position: "sticky", // Keeps the sidebar fixed
               top: 0,
             }}
@@ -57,8 +64,10 @@ export const Layout = () => {
                   return <UpgradesPage />;
                 case Pages.pokedex:
                   return <PokedexPage />;
+                case Pages.brain:
+                  return <BrainPage />;
                 case Pages.traits:
-                  return <div>Traits Page (to be implemented)</div>;
+                  return <TraitsPage />;
                 case Pages.settings:
                   return <div>Settings Page (to be implemented)</div>;
                 default:

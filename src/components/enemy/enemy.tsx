@@ -6,6 +6,7 @@ import { useGameLoopContext } from "../../features/gameloop/gameloop.context";
 import { HealthBar } from "../health-bar/health-bar";
 import { ProgressBar } from "../progress-bar";
 import { TYPOGRAPHY_SIZES } from "../../constants/typography";
+import { ACCENT_ERROR, LABEL_TEXT_COLOR } from "../../constants/colors";
 
 export const Enemy = () => {
   const activeEnemy = useAtomValue(activeEnemyAtom);
@@ -23,12 +24,16 @@ export const Enemy = () => {
       }}
     >
       <Stack spacing={2} alignItems="center">
-        <Paragraph text={activeEnemy.name} size={TYPOGRAPHY_SIZES.title} />
+        <Paragraph
+          text={activeEnemy.name}
+          size={TYPOGRAPHY_SIZES.title}
+          color={LABEL_TEXT_COLOR}
+        />
         <HealthBar
           current={activeEnemy.currentHealth}
           max={activeEnemy.health}
         />
-        <ProgressBar progress={enemyAttackProgress} color="red" />
+        <ProgressBar progress={enemyAttackProgress} color={ACCENT_ERROR} />
       </Stack>
     </Box>
   );

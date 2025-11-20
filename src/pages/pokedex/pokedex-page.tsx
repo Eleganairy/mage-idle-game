@@ -1,10 +1,11 @@
-import { Box } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import { useAtomValue } from "jotai";
 import { slainEnemiesCountAtom } from "../../features/enemy/enemy.atoms";
 import { ALL_ENEMIES } from "../../features/enemy/enemy.constants";
 import { Paragraph } from "../../components/paragraph";
 import { TYPOGRAPHY_SIZES } from "../../constants/typography";
 import { SlainThreshold } from "../../features/enemy/enemy.types";
+import { ACCENT_WARNING, HOVER_OVERLAY } from "../../constants/colors";
 
 export const PokedexPage = () => {
   const slainEnemiesPerArea = useAtomValue(slainEnemiesCountAtom);
@@ -30,7 +31,7 @@ export const PokedexPage = () => {
     switch (threshold) {
       case SlainThreshold.gold:
         return {
-          backgroundColor: "#ffd700",
+          backgroundColor: ACCENT_WARNING,
           borderColor: "#b8860b",
         };
       case SlainThreshold.silver:
@@ -41,7 +42,7 @@ export const PokedexPage = () => {
       case SlainThreshold.bronze:
         return {
           backgroundColor: "#cd7f32",
-          borderColor: "#8b4513",
+          borderColor: HOVER_OVERLAY,
         };
       default:
         return {
@@ -52,24 +53,19 @@ export const PokedexPage = () => {
   };
 
   return (
-    <Box sx={{ padding: 2 }} width={"100%"}>
+    <Box margin={2}>
       {Object.entries(slainEnemiesPerArea).map(([area, slainEnemies]) => {
         return (
-          <Box key={area} sx={{ marginBottom: 4 }}>
-            <h3>Area {area}</h3>
-            <Box
-              sx={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))",
-                gap: 2,
-              }}
-            >
+          <Box key={area} sx={{ marginBottom: 2, paddingX: 2 }}>
+            <Paragraph text={`Area ${area}`} size={TYPOGRAPHY_SIZES.button} />
+            <Stack direction={"row"} justifyContent={"space-between"}>
               {Object.entries(slainEnemies).map(([enemyKey, data]) => {
                 const enemy = ALL_ENEMIES[enemyKey];
                 return (
                   <Box
                     key={enemyKey}
                     sx={{
+                      width: "160px",
                       border: "2px solid black",
                       padding: 2,
                       textAlign: "center",
@@ -95,10 +91,57 @@ export const PokedexPage = () => {
                   </Box>
                 );
               })}
-            </Box>
+            </Stack>
           </Box>
         );
       })}
     </Box>
   );
+  // <Box sx={{ padding: 2 }} width={"100%"}>
+  //   {Object.entries(slainEnemiesPerArea).map(([area, slainEnemies]) => {
+  //     return (
+  //       <Box key={area} sx={{ marginBottom: 4 }}>
+  //         <h3>Area {area}</h3>
+  //         <Stack
+  //           direction={"row"}
+  //           spacing={2}
+  //           justifyContent={"space-between"}
+  //         >
+  //           {Object.entries(slainEnemies).map(([enemyKey, data]) => {
+  //             const enemy = ALL_ENEMIES[enemyKey];
+  //             return (
+  //               <Box
+  //                 key={enemyKey}
+  //                 sx={{
+  //                   width: "140px",
+  //                   border: "2px solid black",
+  //                   padding: 2,
+  //                   textAlign: "center",
+  //                   ...getBlockStyling(data.thresholdCrossed, data.count),
+  //                 }}
+  //               >
+  //                 <h4>{data.count ? enemy.name : "Locked"}</h4>
+  //                 <Paragraph
+  //                   text={`Slain: ${data.count}`}
+  //                   size={TYPOGRAPHY_SIZES.paragraph}
+  //                 />
+  //                 {data.thresholdCrossed !== undefined ? (
+  //                   <Paragraph
+  //                     text={data.thresholdCrossed}
+  //                     size={TYPOGRAPHY_SIZES.paragraph}
+  //                   />
+  //                 ) : (
+  //                   <Paragraph
+  //                     text={data.count ? "Unlocked" : "Locked"}
+  //                     size={TYPOGRAPHY_SIZES.paragraph}
+  //                   />
+  //                 )}
+  //               </Box>
+  //             );
+  //           })}
+  //         </Stack>
+  //       </Box>
+  //     );
+  //   })}
+  // </Box>
 };
