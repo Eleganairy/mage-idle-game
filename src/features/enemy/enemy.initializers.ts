@@ -7,6 +7,7 @@ export const initializeSlainEnemies = () => {
       (enemySlainData, enemyKey) => {
         enemySlainData[enemyKey] = {
           count: 0,
+          thresholdCrossed: undefined,
         };
         return enemySlainData;
       },

@@ -16,13 +16,13 @@ import {
   highestStageAtom,
   highestAreaAtom,
 } from "../game-state/game-state.atoms";
-import { SlainThreshold, type EnemyStats } from "../enemy/enemy.types";
+import { SlainThreshold, type Enemy } from "../enemy/enemy.types";
+import { RARITY_THRESHOLDS } from "../enemy/constants/enemy-rarity.constants";
 import {
+  precomputeWeightedEnemyPool,
   getEnemyKeyByName,
   getWeightedRandomEnemy,
-  precomputeWeightedEnemyPool,
-} from "../enemy/enemy.helpers";
-import { RARITY_THRESHOLDS } from "../enemy/enemy.constants";
+} from "../enemy/helpers/random-enemy-generator.helpers";
 
 export const GameLoopProvider = ({ children }: { children: ReactNode }) => {
   const playerStats = useAtomValue(playerStatsAtom);
@@ -52,7 +52,7 @@ export const GameLoopProvider = ({ children }: { children: ReactNode }) => {
   );
 
   const handleEnemyDeath = useCallback(
-    (enemy: EnemyStats) => {
+    (enemy: Enemy) => {
       const enemyKey = getEnemyKeyByName(enemy.name);
       if (!enemyKey) return;
 
@@ -85,11 +85,11 @@ export const GameLoopProvider = ({ children }: { children: ReactNode }) => {
 
       const totalCurrencyDropReward = () => {
         switch (enemyData.thresholdCrossed) {
-          case SlainThreshold.bronze:
+          case SlainThreshold.BRONZE:
             return enemy.currencyDropReward * 2;
-          case SlainThreshold.silver:
+          case SlainThreshold.SILVER:
             return enemy.currencyDropReward * 5;
-          case SlainThreshold.gold:
+          case SlainThreshold.GOLD:
             return enemy.currencyDropReward * 10;
           default:
             return enemy.currencyDropReward;

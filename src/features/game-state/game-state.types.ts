@@ -1,4 +1,4 @@
-import type { EnemyStats } from "../enemy/enemy.types";
+import type { Enemy } from "../enemy/enemy.types";
 
 export interface GameState {
   activePage: Pages;
@@ -18,7 +18,7 @@ export type Stage = {
 
 export type Area = {
   AreaNumber: number;
-  enemyPool: Record<string, EnemyStats>;
+  enemyPool: Record<string, Enemy>;
   requiredNumberOfStages: number;
 };
 

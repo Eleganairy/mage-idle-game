@@ -4,7 +4,8 @@ import {
   ENEMY_LIST_AREA_3,
   ENEMY_LIST_AREA_4,
   ENEMY_LIST_AREA_5,
-} from "../enemy/enemy.constants";
+  ENEMY_LIST_AREA_6,
+} from "../enemy/constants/enemy-list.constants";
 import { getRequiredStagesForArea } from "./game-state.helpers";
 import { Pages, type Area } from "./game-state.types";
 
@@ -44,5 +45,10 @@ export const gameAreas: Array<Area> = [
     AreaNumber: 5,
     enemyPool: ENEMY_LIST_AREA_5,
     requiredNumberOfStages: getRequiredStagesForArea(5),
+  },
+  {
+    AreaNumber: 6,
+    enemyPool: ENEMY_LIST_AREA_6,
+    requiredNumberOfStages: getRequiredStagesForArea(6),
   },
 ];

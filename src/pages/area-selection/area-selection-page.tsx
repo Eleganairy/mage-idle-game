@@ -8,8 +8,8 @@ import {
 import { gameAreas } from "../../features/game-state/game-state.constants";
 import type { Area } from "../../features/game-state/game-state.types";
 import { activeEnemyAtom } from "../../features/enemy/enemy.atoms";
-import { getRandomEnemy } from "../../features/enemy/enemy.helpers";
 import { AreaSelectionBlock } from "./area-selection-block";
+import { getRandomEnemy } from "../../features/enemy/helpers/random-enemy-generator.helpers";
 
 export const AreaSelectionPage = () => {
   const activeArea = useAtomValue(activeAreaAtom);

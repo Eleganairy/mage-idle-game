@@ -1,5 +1,6 @@
-import { ALL_ENEMIES, RARITY_WEIGHTS } from "./enemy.constants";
-import type { EnemyRarity, EnemyStats } from "./enemy.types";
+import { ALL_ENEMIES } from "../constants/enemy-list.constants";
+import { BASE_RARITY_WEIGHTS } from "../constants/enemy-rarity.constants";
+import type { Enemy, EnemyRarity } from "../enemy.types";
 
 // Get the key from ALL_ENEMIES that matches the enemy name
 export const getEnemyKeyByName = (enemyName: string): string | undefined => {
@@ -8,9 +9,7 @@ export const getEnemyKeyByName = (enemyName: string): string | undefined => {
   );
 };
 
-export const getRandomEnemy = (
-  enemyPool: Record<string, EnemyStats>
-): EnemyStats => {
+export const getRandomEnemy = (enemyPool: Record<string, Enemy>): Enemy => {
   const enemyKeys = Object.keys(enemyPool);
   const randomIndex = Math.floor(Math.random() * enemyKeys.length);
   const enemyKey = enemyKeys[randomIndex];
@@ -22,9 +21,7 @@ export const getRandomEnemy = (
   };
 };
 
-export const getFirstEnemy = (
-  enemyPool: Record<string, EnemyStats>
-): EnemyStats => {
+export const getFirstEnemy = (enemyPool: Record<string, Enemy>): Enemy => {
   const firstKey = Object.keys(enemyPool)[0];
   const enemy = enemyPool[firstKey];
 
@@ -36,10 +33,10 @@ export const getFirstEnemy = (
 
 // Precompute weighted array for an enemy pool
 export const precomputeWeightedEnemyPool = (
-  enemyPool: Record<string, EnemyStats>,
-  rarityWeights: Record<EnemyRarity, number> = RARITY_WEIGHTS
-): EnemyStats[] => {
-  const weightedEnemies: EnemyStats[] = [];
+  enemyPool: Record<string, Enemy>,
+  rarityWeights: Record<EnemyRarity, number> = BASE_RARITY_WEIGHTS
+): Enemy[] => {
+  const weightedEnemies: Enemy[] = [];
 
   Object.values(enemyPool).forEach((enemy) => {
     const weight = rarityWeights[enemy.rarity];
@@ -52,9 +49,7 @@ export const precomputeWeightedEnemyPool = (
 };
 
 // Select a random enemy from a precomputed weighted array
-export const getWeightedRandomEnemy = (
-  weightedEnemies: EnemyStats[]
-): EnemyStats => {
+export const getWeightedRandomEnemy = (weightedEnemies: Enemy[]): Enemy => {
   const randomIndex = Math.floor(Math.random() * weightedEnemies.length);
   return weightedEnemies[randomIndex];
 };

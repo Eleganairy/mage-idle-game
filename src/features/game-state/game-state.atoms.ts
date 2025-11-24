@@ -1,8 +1,8 @@
 import { atom } from "jotai";
 import { DEFAULT_GAME_STATE, gameAreas } from "./game-state.constants";
 import type { GameState } from "./game-state.types";
-import { getRandomEnemy } from "../enemy/enemy.helpers";
 import { activeEnemyAtom } from "../enemy/enemy.atoms";
+import { getRandomEnemy } from "../enemy/helpers/random-enemy-generator.helpers";
 
 // Consolidate related atoms
 export const gameStateAtom = atom<GameState>(DEFAULT_GAME_STATE);

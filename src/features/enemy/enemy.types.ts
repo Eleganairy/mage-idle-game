@@ -1,4 +1,5 @@
-export interface EnemyStats {
+//INTERFACES
+export interface Enemy {
   name: string;
   health: number;
   currentHealth: number;
@@ -6,25 +7,42 @@ export interface EnemyStats {
   attackDamage: number;
   attackSpeed: number; // in milliseconds
   icon?: string;
+  sprite: string;
   rarity: EnemyRarity;
+  type: EnemyType;
 }
 
-export enum EnemyRarity {
-  common = "COMMON",
-  rare = "RARE",
-  legendary = "LEGENDARY",
-}
+//CONSTS
+export const EnemyRarity = {
+  COMMON: "COMMON",
+  RARE: "RARE",
+  LEGENDARY: "LEGENDARY",
+} as const;
 
-// Track slain enemies per area and whether they have crossed their threshold
-export enum SlainThreshold {
-  bronze = "BRONZE",
-  silver = "SILVER",
-  gold = "GOLD",
-}
+export type EnemyRarity = (typeof EnemyRarity)[keyof typeof EnemyRarity];
+
+export const EnemyType = {
+  STANDARD: "STANDARD",
+  FAST: "FAST",
+  STRONG: "STRONG",
+  TANK: "TANK",
+} as const;
+
+export type EnemyType = (typeof EnemyType)[keyof typeof EnemyType];
+
+export const SlainThreshold = {
+  BRONZE: "BRONZE",
+  SILVER: "SILVER",
+  GOLD: "GOLD",
+} as const;
+
+//TYPE ALIASES
+export type SlainThreshold =
+  (typeof SlainThreshold)[keyof typeof SlainThreshold];
 
 export type SlainEnemyData = {
   count: number;
-  thresholdCrossed?: SlainThreshold;
+  thresholdCrossed: SlainThreshold | undefined;
 };
 
 export type SlainEnemiesPerArea = Record<

@@ -1,11 +1,11 @@
 import { Box, Stack } from "@mui/material";
 import { useAtomValue } from "jotai";
 import { slainEnemiesCountAtom } from "../../features/enemy/enemy.atoms";
-import { ALL_ENEMIES } from "../../features/enemy/enemy.constants";
 import { Paragraph } from "../../components/paragraph";
 import { TYPOGRAPHY_SIZES } from "../../constants/typography";
 import { SlainThreshold } from "../../features/enemy/enemy.types";
 import { ACCENT_WARNING, HOVER_OVERLAY } from "../../constants/colors";
+import { ALL_ENEMIES } from "../../features/enemy/constants/enemy-list.constants";
 
 export const PokedexPage = () => {
   const slainEnemiesPerArea = useAtomValue(slainEnemiesCountAtom);
@@ -29,17 +29,17 @@ export const PokedexPage = () => {
     }
 
     switch (threshold) {
-      case SlainThreshold.gold:
+      case SlainThreshold.GOLD:
         return {
           backgroundColor: ACCENT_WARNING,
           borderColor: "#b8860b",
         };
-      case SlainThreshold.silver:
+      case SlainThreshold.SILVER:
         return {
           backgroundColor: "#c0c0c0",
           borderColor: "#a9a9a9",
         };
-      case SlainThreshold.bronze:
+      case SlainThreshold.BRONZE:
         return {
           backgroundColor: "#cd7f32",
           borderColor: HOVER_OVERLAY,
@@ -97,51 +97,4 @@ export const PokedexPage = () => {
       })}
     </Box>
   );
-  // <Box sx={{ padding: 2 }} width={"100%"}>
-  //   {Object.entries(slainEnemiesPerArea).map(([area, slainEnemies]) => {
-  //     return (
-  //       <Box key={area} sx={{ marginBottom: 4 }}>
-  //         <h3>Area {area}</h3>
-  //         <Stack
-  //           direction={"row"}
-  //           spacing={2}
-  //           justifyContent={"space-between"}
-  //         >
-  //           {Object.entries(slainEnemies).map(([enemyKey, data]) => {
-  //             const enemy = ALL_ENEMIES[enemyKey];
-  //             return (
-  //               <Box
-  //                 key={enemyKey}
-  //                 sx={{
-  //                   width: "140px",
-  //                   border: "2px solid black",
-  //                   padding: 2,
-  //                   textAlign: "center",
-  //                   ...getBlockStyling(data.thresholdCrossed, data.count),
-  //                 }}
-  //               >
-  //                 <h4>{data.count ? enemy.name : "Locked"}</h4>
-  //                 <Paragraph
-  //                   text={`Slain: ${data.count}`}
-  //                   size={TYPOGRAPHY_SIZES.paragraph}
-  //                 />
-  //                 {data.thresholdCrossed !== undefined ? (
-  //                   <Paragraph
-  //                     text={data.thresholdCrossed}
-  //                     size={TYPOGRAPHY_SIZES.paragraph}
-  //                   />
-  //                 ) : (
-  //                   <Paragraph
-  //                     text={data.count ? "Unlocked" : "Locked"}
-  //                     size={TYPOGRAPHY_SIZES.paragraph}
-  //                   />
-  //                 )}
-  //               </Box>
-  //             );
-  //           })}
-  //         </Stack>
-  //       </Box>
-  //     );
-  //   })}
-  // </Box>
 };
